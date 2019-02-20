@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    font-size: 0;
+    background-image: url("images/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+body > * {
+    font-size: 1rem;
+}
+
+header {
+    background-color: rgba(45, 45, 45, .3);
+    height: 20vh;
+}
+
+header > * {
+    display: inline-block;
+}
+
+.logoArea, .logo {
+    height: 100%;
+}
+
+a {
+    text-align: right;
+}
+
+.statsContainer, .gameArea, .dexArea {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.statsContainer {
+    background-color: rgba(45, 45, 45, .8);
+    height: 80vh;
+    width: 20%;
+}
+
+.gameArea {
+    height: 80vh;
+    width: 60%;
+}
+
+.card {
+    height: 40px;
+    width: 40px;
+    display: inline-block;
+    position: relative;
+}
+
+img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.back > img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.front, .back {
+    position: absolute;
+}
+
+.front {
+    background-color: white;
+}
+
+.back {
+    position: absolute;
+    background-color: black;
+}
+
+.dexArea {
+    background-color: rgba(45, 45, 45, .8);
+    height: 80vh;
+    width: 20%;
+}
