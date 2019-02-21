@@ -48,6 +48,9 @@ a {
     width: 40px;
     display: inline-block;
     position: relative;
+    border: 1px solid whitesmoke;
+    border-radius: 5px;
+
 }
 
 img {
@@ -55,22 +58,16 @@ img {
     max-width: 100%;
 }
 
-.back > img {
-    max-height: 100%;
-    max-width: 100%;
-}
-
 .front, .back {
     position: absolute;
+
 }
 
 .front {
-    background-color: white;
 }
 
 .back {
     position: absolute;
-    background-color: black;
 }
 
 .dexArea {
