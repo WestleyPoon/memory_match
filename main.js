@@ -7,12 +7,12 @@ var match_counter = 0;
 $(document).ready(initializeApp);
 
 function initializeApp() {
-    $('.card').click(cardClicked);
+    $('.cardHolder').on('click', '.card', cardClicked);
 }
 
 function cardClicked() {
     if (canClick){
-        $(this).find(".back").fadeOut(500);
+        $(this).find(".back").fadeOut(350);
 
         console.log($(this).attr('class'));
 
@@ -31,19 +31,36 @@ function cardClicked() {
                 match_counter++;
                 firstCardClicked = secondCardClicked = null;
                 if (match_counter === total_possible_matches) {
-                    console.log("WIN");
+                    alert('win message');
                 }
 
             } else {
                 canClick = false;
                 setTimeout(function () {
-                    firstCardClicked.find('.back').fadeIn(500);
-                    secondCardClicked.find('.back').fadeIn(500);
+                    firstCardClicked.find('.back').fadeIn(350);
+                    secondCardClicked.find('.back').fadeIn(350);
                     canClick = true;
                     firstCardClicked = secondCardClicked = null;
-                }, 2000);
+                }, 1500);
             }
         }
     }
 
+}
+
+function addCard () {
+    var type = 'masterBall';
+
+    var newCard = $('<div>',{class: 'card ' + type});
+    var newFront = $('<div>', {class: 'front'});
+    var newBack = $('<div>', {class: 'back'});
+
+    var frontImg = $('<img>', {src: 'images/' + type + '.png'});
+    var backImg = $('<img>', {src: 'images/testImage.png'});
+
+    newFront.append(frontImg);
+    newBack.append(backImg);
+    newCard.append(newFront).append(newBack);
+
+    $('.cardHolder').append(newCard);
 }

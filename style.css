@@ -41,15 +41,25 @@ a {
 .gameArea {
     height: 80vh;
     width: 60%;
+    text-align: center;
+    position: relative;
+}
+
+.cardHolder {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .card {
-    height: 40px;
-    width: 40px;
+    height: 15vmin;
+    width: 15vmin;
+    margin: 4vmin 0;
     display: inline-block;
     position: relative;
-    border: 1px solid whitesmoke;
-    border-radius: 5px;
+    /*border: 1px solid whitesmoke;*/
+    /*border-radius: 5px;*/
 
 }
 
