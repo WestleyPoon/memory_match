@@ -1,3 +1,37 @@
+@font-face {
+    font-family: dppt;
+    src: url("fonts/dppt.ttf");
+}
+
+* {
+    font-family: dppt, sans-serif;
+}
+
+html {
+    font-size: 2em;
+    text-align: center;
+    background-image: url("images/bg2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
 img {
     height: 400px;
+}
+
+.text {
+    background-color: rgba(45, 45, 45, .8);
+    border-radius: 5px;
+    color: rgb(255, 203, 0);
+    margin: 50px;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(255, 203, 0);
+}
+
+.skills {
+    display: block;
 }

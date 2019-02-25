@@ -13,105 +13,53 @@
 <body>
     <header>
         <div class="logoArea">
-            <img class="logo" src="images/testImage.png" alt="">
         </div>
-        <h1 class="gameTitle">Game Title</h1>
+        <h1 class=" text">Pokemon: Match 'em All!</h1>
         <div class="links">
-            <a href="">Settings</a>
-            <a href="about.html" target="_blank">About</a>
+            <div class="settingsDiv button">
+                <a class="text" href="about.html" target="_blank">Settings</a>
+            </div>
+            <div class="aboutDiv button">
+                <a class="text" href="about.html" target="_blank">About</a>
+            </div>
         </div>
     </header>
-    <div class="statsContainer">
-        <div class="gamesPlayed">
-            <div class="label">Games Played</div>
-            <div class="value"></div>
+    <div class="statsContainer text">
+        <div class="statsPositioner">
+            <div class="gamesPlayed">
+                <div class="label">Rounds Played</div>
+                <div class="value">-</div>
+            </div>
+            <div class="attempts">
+                <div class="label">Attempts</div>
+                <div class="value">-</div>
+            </div>
+            <div class="accuracy">
+                <div class="label">Accuracy</div>
+                <div class="value">-</div>
+            </div>
+            <div class="winText">
+                <div class="label"></div>
+            </div>
+            <button class="reset text button">Reshuffle</button>
+            <button class="bgmusic text button">Music</button>
         </div>
-        <div class="attempts">
-            <div class="label">Attempts</div>
-            <div class="value"></div>
-        </div>
-        <div class="accuracy">
-            <div class="label">Accuracy</div>
-            <div class="value"></div>
-        </div>
-        <button class="reset">Reset Game</button>
     </div>
     <div class="gameArea">
-        <div class="cardHolder">
-            <div class="pokeball card">
-                <div class="front"><img src="images/pokeBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="pokeball card">
-                <div class="front"><img src="images/pokeBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="masterball card">
-                <div class="front"><img src="images/masterBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="masterball card">
-                <div class="front"><img src="images/masterBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="loveball card">
-                <div class="front"><img src="images/loveBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="loveball card">
-                <div class="front"><img src="images/loveBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="premierball card">
-                <div class="front"><img src="images/premierBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="premierball card">
-                <div class="front"><img src="images/premierBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="ultraball card">
-                <div class="front"><img src="images/ultraBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="ultraball card">
-                <div class="front"><img src="images/ultraBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="duskball card">
-                <div class="front"><img src="images/duskBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="duskball card">
-                <div class="front"><img src="images/duskBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="safariball card">
-                <div class="front"><img src="images/safariBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="safariball card">
-                <div class="front"><img src="images/safariBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="greatball card">
-                <div class="front"><img src="images/greatBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="greatball card">
-                <div class="front"><img src="images/greatBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="quickball card">
-                <div class="front"><img src="images/quickBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
-            </div>
-            <div class="quickball card">
-                <div class="front"><img src="images/quickBall.png" alt=""></div>
-                <div class="back"><img src="images/testImage.png" alt=""></div>
+        <div class="cardHolder text">
+            <div class="startGameButton">
+                <button class="start text button">
+                    Start Game
+                </button>
             </div>
         </div>
     </div>
-    <div class="dexArea"></div>
+    <div class="dexArea">
+        <div class="dexPositioner text">
+            PokeDex: <span class="dexNo">0</span>
+            <div class="dexHolder">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
