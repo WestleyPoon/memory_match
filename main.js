@@ -211,7 +211,7 @@ function addCard (num) {
     var row = Math.floor(num / 28);
     var col = num % 28;
 
-    /* change picture based on dex no. and placement in 28x6 sprite sheet */
+    /* change picture based on dex no. and placement in 28 x 6 sprite sheet */
     front.prop('id', 'front').css({'background-position':
         'calc((' + col + ' * 320%) / 86.40) calc((' + row + ' * 320%) / 16.00)'});
 
