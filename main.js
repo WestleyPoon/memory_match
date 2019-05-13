@@ -28,6 +28,10 @@ bgLoop.volume = .25;
 $(document).ready(initializeApp);
 
 function initializeApp() {
+    setTimeout(function(){
+        // Hide the address bar!
+        window.scrollTo(0, 1);
+    }, 0);
     $('.start').on('click', startGame);
     $('.cardHolder').on('click', '.card', cardClicked);
     fillDex();
