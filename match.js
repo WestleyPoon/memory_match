@@ -84,6 +84,7 @@ class Match {
                 if (this.firstCard.num === card.num) {
                     this.canClick = true;
                     this.stats.matches++;
+                    this.dex.capture(card.num);
 
                     if (this.stats.matches === 9) {
                         this.win();

@@ -23,7 +23,7 @@ class Card {
         this.domElement = $('<div>', {class: 'card'});
         this.cardInnerElement = $('<div>', {class: 'card-inner'});
 
-        // each sprite is 320x320, entire spritesheet is 8960x1920
+        // each sprite is 320x320, entire spritesheet is 8960 x 1920
         const front = $('<div>', {class: 'front'});
         front.css({'background-position': `calc((${col} * 320%) / 86.40) calc((${row} * 320%) / 16.00)`});
 
