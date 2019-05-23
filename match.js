@@ -1,5 +1,5 @@
 class Match {
-    constructor(container) {
+    constructor(container, matches) {
         this.domElements = {
             container: container,
             statsArea: null,
@@ -8,6 +8,7 @@ class Match {
         };
 
         this.board = null;
+        this.dex = null;
         this.sounds = null;
 
         this.stats = {
@@ -32,12 +33,16 @@ class Match {
             handleMatchAttempt: this.handleMatchAttempt,
             win: this.win
         });
+        this.dex = new Dex();
 
         this.domElements.statsArea = this.renderStats();
         this.domElements.container.append(this.domElements.statsArea);
 
         this.domElements.gameArea = this.board.render();
         this.domElements.container.append(this.domElements.gameArea);
+
+        this.domElements.dexArea = this.dex.render();
+        this.domElements.container.append(this.domElements.dexArea);
     }
 
     win() {

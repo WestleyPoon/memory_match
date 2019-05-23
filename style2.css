@@ -67,7 +67,7 @@ h1 {
     text-align: center;
 }
 
-.stats-inner {
+.stats-inner, .dex-inner {
     width: 70%;
     padding: 5%;
     position: relative;
@@ -154,4 +154,33 @@ h1 {
 
 .dex-area {
     width: 20%;
+}
+
+.dex-inner {
+    top: initial;
+    transform: none;
+    max-height: 90%;
+    overflow-y: scroll;
+}
+
+.dex-header {
+    /*width: 20%*/
+}
+
+.dex-header > .label {
+    /*width: 20%*/
+}
+
+.dex-num {
+    /*width: 20%*/
+}
+
+.dex-holder {
+    /*width: 20%*/
+}
+
+.dex-entry {
+    display: inline-block;
+    width: calc(100% / 6);
+    font-size: .6em
 }
