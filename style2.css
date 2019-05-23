@@ -1,3 +1,13 @@
+:root {
+    --transparent-bg-color: rgba(0, 0, 0, .7);
+    --text-color: rgb(255, 203, 0);
+    --grass-color: rgb(90, 162, 132);
+}
+
+.hidden {
+    visibility: hidden;
+}
+
 @font-face {
     font-family: dppt;
     src: url("fonts/dppt.ttf");
@@ -15,14 +25,13 @@ body {
     background-position: center;
     font-size: 0;
     font-family: dppt, sans-serif;
-    color: rgb(255, 203, 0);
+    color: var(--text-color);
 }
 
 header {
     height: 15vh;
     position: relative;
-    /*background-color: palegoldenrod;*/
-    background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(var(--transparent-bg-color), rgba(0, 0, 0, 0));
 }
 
 .logo-area, h1 {
@@ -64,7 +73,7 @@ h1 {
     position: relative;
     left: 10%;
     font-size: 1.8em;
-    background-color: rgba(0, 0, 0, .7);
+    background-color: var(--transparent-bg-color);
     border-radius: 10px;
     top: 50%;
     transform: translateY(-50%);
@@ -79,7 +88,7 @@ h1 {
     font-size: 1em;
     color: inherit;
     background-color: transparent;
-    border: 2px solid rgb(255, 203, 0);
+    border: 2px solid var(--text-color);
     border-radius: 5px;
     margin-top: 15px;
     width: 70%;
@@ -97,7 +106,7 @@ h1 {
     max-height: 90%;
     min-height: 70%;
     width: 100%;
-    background-color: rgba(0, 0, 0, .7);
+    background-color: var(--transparent-bg-color);
     border-radius: 10px;
     display: flex;
     justify-content: space-evenly;
@@ -140,7 +149,7 @@ h1 {
 }
 
 .back {
-    background: rgb(90, 162, 132);
+    background: var(--grass-color);
 }
 
 .dex-area {

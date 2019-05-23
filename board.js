@@ -1,17 +1,12 @@
 class Board {
     constructor(callbacks) {
-        this.domElement = null;
-        this.cardContainerElement = null;
         this.cards = [];
 
+        this.domElement = null;
+        this.cardContainerElement = null;
         this.callbacks = callbacks;
 
-        this.firstCard = null;
-        this.canClick = true;
-        this.matches = 0;
-
         this.randomizeCards = this.randomizeCards.bind(this);
-        this.checkMatch = this.checkMatch.bind(this);
     }
 
     randomizeCards() {
@@ -42,41 +37,9 @@ class Board {
     }
 
     addCard(num) {
-        const newCard = new Card(num, {
-            playSound: this.callbacks.playSound,
-            checkMatch: this.checkMatch
-        });
+        const newCard = new Card(num, this.callbacks);
         this.cardContainerElement.append(newCard.render());
         this.cards.push(newCard);
-    }
-
-    checkMatch(card) {
-        if (this.canClick && !card.revealed) {
-            card.flip();
-
-            if (this.firstCard) {
-                this.canClick = false;
-
-                if (this.firstCard.num === card.num) {
-                    this.canClick = true;
-                    if (this.matches === 9) {
-                        this.callbacks.win();
-                    }
-
-                } else {
-                    const firstCard = this.firstCard;
-                    setTimeout(() => {
-                        card.unflip();
-                        firstCard.unflip();
-                        this.canClick = true;
-                    }, 1500)
-                }
-                this.firstCard = null;
-
-            } else {
-                this.firstCard = card;
-            }
-        }
     }
 
     render() {
