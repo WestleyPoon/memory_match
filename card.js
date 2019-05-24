@@ -28,7 +28,7 @@ class Card {
         front.css({'background-position': `calc((${col} * 320%) / 86.40) calc((${row} * 320%) / 16.00)`});
 
         const back = $('<div>', {class: 'back'}).append(
-            $('<img>', {class: 'grass', src: './images/grass.png'})
+            $('<img>', {class: 'grass', src: './images/grass.png', draggable: false})
         );
 
         this.cardInnerElement.append(front, back);
@@ -39,7 +39,6 @@ class Card {
     }
 
     handleClick() {
-        this.callbacks.playSound('beep');
         this.callbacks.handleMatchAttempt(this);
     }
 

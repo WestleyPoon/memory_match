@@ -43,6 +43,13 @@ class Match {
 
         this.domElements.dexArea = this.dex.render();
         this.domElements.container.append(this.domElements.dexArea);
+
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        $('.reset-button').on('click', this.handleReshuffleButton);
+        $('.bgm-button').on('click', this.handleMusicButton);
     }
 
     win() {
@@ -59,7 +66,13 @@ class Match {
     }
 
     handleMusicButton() {
+        console.log('test');
         this.sounds.sounds.bgm.muted = !this.sounds.sounds.bgm.muted;
+        if (this.sounds.sounds.bgm.muted) {
+            $('.bgm-button').addClass('disabled');
+        } else {
+            $('.bgm-button').removeClass('disabled');
+        }
     }
 
     updateStats() {
@@ -82,15 +95,18 @@ class Match {
 
                 // if both cards match
                 if (this.firstCard.num === card.num) {
+                    this.sounds.playSound('right');
                     this.canClick = true;
                     this.stats.matches++;
                     this.dex.capture(card.num);
 
                     if (this.stats.matches === 9) {
+                        this.sounds.playSound('fanfare');
                         this.win();
                     }
 
                 } else {
+                    this.sounds.playSound('wrong');
                     const firstCard = this.firstCard;
                     setTimeout(() => {
                         card.unflip();
@@ -104,6 +120,7 @@ class Match {
 
             // otherwise, it's the first card in current match attempt - store it
             } else {
+                this.sounds.playSound('beep');
                 this.firstCard = card;
             }
         }
@@ -124,8 +141,8 @@ class Match {
                         $('<div>', {class: 'value', text: '0.00%'})),
                     $('<div>', {class: 'win-text'}).append(
                         $('<div>', {class: 'label hidden', text: 'You win! Click on reshuffle for more.'})),
-                    $('<button>', {class: 'reset-button', text: 'Reshuffle'}).on('click', this.handleReshuffleButton),
-                    $('<button>', {class: 'bg-button', text: 'Music'}).on('click', this.handleMusicButton)
+                    $('<button>', {class: 'reset-button', text: 'Reshuffle'}),
+                    $('<button>', {class: 'bg-button', text: 'Music'})
                 )
             );
 
