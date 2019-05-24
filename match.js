@@ -112,7 +112,7 @@ class Match {
                         card.unflip();
                         firstCard.unflip();
                         this.canClick = true;
-                    }, 1500)
+                    }, 1250)
                 }
 
                 this.firstCard = null;

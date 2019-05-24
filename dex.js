@@ -12,7 +12,9 @@ class Dex {
         if (this.dex[num].captureCheck()) {
             this.numCaptured++;
 
+            // get the height of the dex area, and calculate the pokemon's position
             const scrollTo = this.domElement.height() / (151 / 6) * (num / 6);
+            // change the duration of the scroll animation based on distance to scroll
             const scrollDuration = Math.abs(scrollTo - this.dexEntryHolderElement.scrollTop());
 
             this.dexEntryHolderElement.animate({
@@ -23,7 +25,7 @@ class Dex {
     }
 
     updateStats() {
-        $('.dex-num').text(this.numCaptured);
+        $('.dex-counter').text(this.numCaptured);
     }
 
     render() {
@@ -32,7 +34,7 @@ class Dex {
         const dexInner = $('<div>', {class: 'dex-inner'}).append(
             $('<div>', {class: 'dex-header'}).append(
                 $('<span>', {class: 'label', text: 'PokeDex:'}),
-                $('<span>', {class: 'dex-num', text: '0'})
+                $('<span>', {class: 'dex-counter', text: '0'})
             )
         );
 
@@ -49,5 +51,14 @@ class Dex {
         this.domElement.append(dexInner);
 
         return this.domElement;
+    }
+
+    testFill() {
+        for (let i = 0; i < this.dex.length; i++) {
+            if (this.dex[i].captureCheck()) {
+                this.numCaptured++;
+            }
+        }
+        this.updateStats();
     }
 }
