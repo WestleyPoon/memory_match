@@ -11,16 +11,13 @@ class DexEntry {
     }
 
     captureCheck() {
+        this.select();
         if (!this.captured) {
             this.captured = true;
-
             this.textElement.css({color: 'var(--text-color)'});
             this.imageElement.removeClass('hidden');
-            this.select();
-
             return true;
         }
-
         return false;
     }
 

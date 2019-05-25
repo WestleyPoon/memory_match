@@ -24,27 +24,34 @@ class Match {
         this.handleMusicButton = this.handleMusicButton.bind(this);
         this.handleReshuffleButton = this.handleReshuffleButton.bind(this);
         this.handleMatchAttempt = this.handleMatchAttempt.bind(this);
+
+        this.start()
     }
 
     start() {
+        this.renderLoadingPage();
+
         this.sounds = new Sounds();
         this.board = new Board({
             playSound: this.sounds.playSound,
             handleMatchAttempt: this.handleMatchAttempt,
             win: this.win
         });
+
         this.dex = new Dex();
 
-        this.domElements.statsArea = this.renderStats();
-        this.domElements.container.append(this.domElements.statsArea);
+        setTimeout(() => {
+            this.domElements.statsArea = this.renderStats();
+            this.domElements.container.append(this.domElements.statsArea);
 
-        this.domElements.gameArea = this.board.render();
-        this.domElements.container.append(this.domElements.gameArea);
+            this.domElements.gameArea = this.board.render();
+            this.domElements.container.append(this.domElements.gameArea);
 
-        this.domElements.dexArea = this.dex.render();
-        this.domElements.container.append(this.domElements.dexArea);
+            this.domElements.dexArea = this.dex.render();
+            this.domElements.container.append(this.domElements.dexArea);
 
-        this.addEventListeners();
+            this.addEventListeners();
+        }, 100);
     }
 
     addEventListeners() {
@@ -147,5 +154,11 @@ class Match {
             );
 
         return this.domElements.statsArea;
+    }
+
+    renderLoadingPage() {
+        // this.domElements.container.prepend(
+        //     $('<div>', {class: 'loading-page'})
+        // );
     }
 }
