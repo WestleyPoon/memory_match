@@ -6,12 +6,25 @@
 }
 
 .hidden {
-    /*visibility: hidden;*/
     opacity: 0;
 }
 
 .selected {
     border: 1px var(--text-color) solid;
+}
+
+@keyframes jump {
+    0% {transform: rotateY(180deg) translateY(0px)}
+    5% {transform: rotateY(180deg) translateY(-1vh)}
+    7.5% {transform: rotateY(180deg) translateY(0px)}
+    10% {transform: rotateY(180deg) translateY(-.30vh)}
+    12.5% {transform: rotateY(180deg) translateY(0px)}
+    50% {transform: translateX(calc(100vw - 12vh))}
+    100% {transform: rotateY(180deg) translateX(0vw)}
+}
+
+.furret-jump {
+    animation: jump 2.5s;
 }
 
 @font-face {
@@ -53,7 +66,7 @@ body {
     padding: 2.5%;
     border-radius: 10px;
     position: relative;
-    top: 60%;
+    top: 37.5%;
     left: 27.5%;
 }
 
@@ -270,5 +283,5 @@ h1 {
     left: 0;
     font-size: 1.2em;
     color: var(--disabled-color);
-
 }
+

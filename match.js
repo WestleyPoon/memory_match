@@ -25,7 +25,8 @@ class Match {
         this.handleReshuffleButton = this.handleReshuffleButton.bind(this);
         this.handleMatchAttempt = this.handleMatchAttempt.bind(this);
         this.startGame = this.startGame.bind(this);
-        this.loadData = this.loadData.bind(this);
+        this.continueGame = this.continueGame.bind(this);
+        this.saveData = this.saveData.bind(this);
 
         this.start()
     }
@@ -53,14 +54,25 @@ class Match {
             this.domElements.container.append(this.domElements.dexArea);
 
             this.addEventListeners();
+            this.addAnimations();
         }, 100);
     }
 
     addEventListeners() {
         $('.new-game-button').on('click', this.startGame);
-        $('.continue-button').on('click', this.loadData);
+        $('.continue-button').on('click', this.continueGame);
         $('.reset-button').on('click', this.handleReshuffleButton);
         $('.bgm-button').on('click', this.handleMusicButton);
+    }
+
+    addAnimations() {
+        $('header').on('mouseenter', function() {
+            $('.logo-area').addClass('furret-jump');
+        });
+
+        $('.logo-area').on('webkitAnimationEnd mozAnimationEnd animationend', function () {
+            $(this).removeClass('furret-jump');
+        });
     }
     
     startGame() {
@@ -71,8 +83,9 @@ class Match {
 
     }
     
-    loadData() {
-        console.log('load data');
+    continueGame() {
+        this.loadData();
+        this.startGame();
     }
 
     win() {
@@ -84,6 +97,7 @@ class Match {
         this.stats.attempts = 0;
         this.stats.gamesPlayed++;
         this.updateStats();
+        localStorage.setItem('gamesPlayed', this.stats.gamesPlayed);
         this.board.randomizeCards();
         $('.win-text > .label').addClass('hidden');
     }
@@ -140,6 +154,7 @@ class Match {
 
                 this.firstCard = null;
                 this.updateStats();
+                this.saveData();
 
             // otherwise, it's the first card in current match attempt - store it
             } else {
@@ -172,9 +187,38 @@ class Match {
         return this.domElements.statsArea;
     }
 
+    saveData() {
+        localStorage.setItem('captured', JSON.stringify(this.dex.captured))
+    }
+
+    loadData() {
+        const gamesPlayed = parseInt(localStorage.getItem('gamesPlayed'));
+        const captured = JSON.parse(localStorage.getItem('captured'));
+
+        if (gamesPlayed && Array.isArray(captured)) {
+            this.stats.gamesPlayed = gamesPlayed;
+
+            for (let i = 0; i < captured.length; i++) {
+                if (captured[i]) {
+                    this.dex.capture(i, false);
+                }
+            }
+
+            $('.selected').removeClass('selected');
+        }
+
+        this.updateStats();
+    }
+
     renderLoadingPage() {
-        // this.domElements.container.prepend(
-        //     $('<div>', {class: 'loading-page'})
-        // );
+        this.domElements.container.prepend(
+            $('<div>', {class: 'loading-page'}).append(
+                $('<div>', {class: 'spinner'}),
+                $('<div>', {class: 'loading-page-buttons'}).append(
+                    $('<button>', {class: 'new-game-button', text: 'New Game'}),
+                    $('<button>', {class: 'continue-button', text: 'Continue'})
+                )
+            )
+        );
     }
 }
