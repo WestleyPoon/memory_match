@@ -26,8 +26,9 @@ class Match {
         this.handleMatchAttempt = this.handleMatchAttempt.bind(this);
         this.confirmNewGame = this.confirmNewGame.bind(this);
         this.startGame = this.startGame.bind(this);
-        this.continueGame = this.continueGame.bind(this);
+        this.checkForSaveData = this.checkForSaveData.bind(this);
         this.saveData = this.saveData.bind(this);
+        this.startNewGame = this.startNewGame.bind(this);
 
         this.start()
     }
@@ -61,7 +62,7 @@ class Match {
 
     addEventListeners() {
         $('.new-game-button').on('click', this.confirmNewGame);
-        $('.continue-button').on('click', this.continueGame);
+        $('.continue-button').on('click', this.checkForSaveData);
         $('.reset-button').on('click', this.handleReshuffleButton);
         $('.bgm-button').on('click', this.handleMusicButton);
     }
@@ -78,16 +79,34 @@ class Match {
 
     confirmNewGame() {
         if (localStorage.getItem('captured')) {
-            const confirmModal = new Modal({
+            const modal = new Modal({
                 text: 'Starting a new game will overwrite the saved game data. Continue?',
-                confirmHandler: this.startGame,
-                confirmButtonText: 'Yes',
-                rejectButtonText: 'No'
+                confirmButton: 'Yes',
+                confirmHandler: this.startNewGame,
+                rejectButton: 'No'
             });
-            this.domElements.container.append(confirmModal.render());
+            this.domElements.container.append(modal.render());
         } else {
             this.startGame();
         }
+    }
+
+    checkForSaveData() {
+        if (localStorage.getItem('captured')) {
+            this.continueGame();
+        } else {
+            const modal = new Modal({
+                text: 'No save data found. Please start a new game.',
+                confirmButton: 'OK'
+            });
+            this.domElements.container.append(modal.render());
+        }
+    }
+
+    startNewGame() {
+        localStorage.removeItem('captured');
+        localStorage.removeItem('gamesPlayed');
+        this.startGame();
     }
     
     startGame() {

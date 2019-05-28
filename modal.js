@@ -3,11 +3,10 @@ class Modal {
         this.domElement = null;
 
         this.text = options.text;
+        this.confirmButton = options.confirmButton;
         this.confirmHandler = options.confirmHandler;
-        this.confirmButtonText = options.confirmButtonText;
-
+        this.rejectButton = options.rejectButton;
         this.rejectHandler = options.rejectHandler;
-        this.rejectButtonText = options.rejectButtonText;
 
         this.confirm = this.confirm.bind(this);
         this.reject = this.reject.bind(this);
@@ -41,19 +40,13 @@ class Modal {
 
         const modalButtons = $('<div>', {class: 'modal-buttons'});
 
-        const confirmButton = $('<button>', {class: 'modal-confirm', text: this.confirmButtonText});
-        confirmButton.on('click', this.confirm);
+        const confirmButton = $('<button>', {class: 'modal-confirm', text: this.confirmButton});
+        confirmButton.on('click', this.confirmHandler ? this.confirm : this.close);
         modalButtons.append(confirmButton);
 
-        if (this.rejectButtonText) {
-            const rejectButton = $('<button>', {class: 'modal-reject', text: this.rejectButtonText});
-
-            if (this.rejectHandler) {
-                rejectButton.on('click', this.reject);
-            } else {
-                rejectButton.on('click', this.close);
-            }
-
+        if (this.rejectButton) {
+            const rejectButton = $('<button>', {class: 'modal-reject', text: this.rejectButton});
+            rejectButton.on('click', this.rejectHandler? this.reject : this.close);
             modalButtons.append(rejectButton);
         }
 
