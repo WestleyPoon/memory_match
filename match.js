@@ -24,6 +24,8 @@ class Match {
         this.handleMusicButton = this.handleMusicButton.bind(this);
         this.handleReshuffleButton = this.handleReshuffleButton.bind(this);
         this.handleMatchAttempt = this.handleMatchAttempt.bind(this);
+        this.startGame = this.startGame.bind(this);
+        this.loadData = this.loadData.bind(this);
 
         this.start()
     }
@@ -55,8 +57,22 @@ class Match {
     }
 
     addEventListeners() {
+        $('.new-game-button').on('click', this.startGame);
+        $('.continue-button').on('click', this.loadData);
         $('.reset-button').on('click', this.handleReshuffleButton);
         $('.bgm-button').on('click', this.handleMusicButton);
+    }
+    
+    startGame() {
+        $('.loading-page').addClass('hidden');
+        setTimeout(() => {
+            $('.loading-page').remove();
+        }, 750)
+
+    }
+    
+    loadData() {
+        console.log('load data');
     }
 
     win() {

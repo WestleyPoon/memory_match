@@ -43,6 +43,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    transition: opacity .75s ease-out;
 }
 
 .loading-page-buttons {
@@ -148,7 +149,7 @@ h1 {
 }
 
 .win-text > .label {
-    transition: opacity .75s;
+    transition: opacity .75s ease-out;
 }
 
 .game-area {
@@ -231,7 +232,6 @@ h1 {
     margin-bottom: 2.5%;
 }
 
-
 .dex-counter {
     margin-left: 2%;
 }
@@ -257,7 +257,7 @@ h1 {
 }
 
 .dex-image, .dex-num {
-    transition: opacity .75s, color .75s;
+    transition: opacity .75s ease-out, color .75s;
 }
 
 .dex-image {
