@@ -24,6 +24,7 @@ class Match {
         this.handleMusicButton = this.handleMusicButton.bind(this);
         this.handleReshuffleButton = this.handleReshuffleButton.bind(this);
         this.handleMatchAttempt = this.handleMatchAttempt.bind(this);
+        this.confirmNewGame = this.confirmNewGame.bind(this);
         this.startGame = this.startGame.bind(this);
         this.continueGame = this.continueGame.bind(this);
         this.saveData = this.saveData.bind(this);
@@ -59,7 +60,7 @@ class Match {
     }
 
     addEventListeners() {
-        $('.new-game-button').on('click', this.startGame);
+        $('.new-game-button').on('click', this.confirmNewGame);
         $('.continue-button').on('click', this.continueGame);
         $('.reset-button').on('click', this.handleReshuffleButton);
         $('.bgm-button').on('click', this.handleMusicButton);
@@ -74,13 +75,26 @@ class Match {
             $(this).removeClass('furret-jump');
         });
     }
+
+    confirmNewGame() {
+        if (localStorage.getItem('captured')) {
+            const confirmModal = new Modal({
+                text: 'Starting a new game will overwrite the saved game data. Continue?',
+                confirmHandler: this.startGame,
+                confirmButtonText: 'Yes',
+                rejectButtonText: 'No'
+            });
+            this.domElements.container.append(confirmModal.render());
+        } else {
+            this.startGame();
+        }
+    }
     
     startGame() {
         $('.loading-page').addClass('hidden');
         setTimeout(() => {
             $('.loading-page').remove();
         }, 750)
-
     }
     
     continueGame() {
