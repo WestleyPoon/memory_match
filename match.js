@@ -1,5 +1,5 @@
 class Match {
-    constructor(container, matches) {
+    constructor(container) {
         this.domElements = {
             container: container,
             statsArea: null,
@@ -14,7 +14,7 @@ class Match {
         this.stats = {
             matches: 0,
             gamesPlayed: 0,
-            attempts: 0,
+            attempts: 0
         };
 
         this.firstCard = null;
@@ -24,32 +24,108 @@ class Match {
         this.handleMusicButton = this.handleMusicButton.bind(this);
         this.handleReshuffleButton = this.handleReshuffleButton.bind(this);
         this.handleMatchAttempt = this.handleMatchAttempt.bind(this);
+        this.confirmNewGame = this.confirmNewGame.bind(this);
+        this.startGame = this.startGame.bind(this);
+        this.checkForSaveData = this.checkForSaveData.bind(this);
+        this.saveData = this.saveData.bind(this);
+        this.startNewGame = this.startNewGame.bind(this);
+
+        this.start()
     }
 
     start() {
         this.sounds = new Sounds();
+
+        this.renderLandingPage();
+
         this.board = new Board({
             playSound: this.sounds.playSound,
             handleMatchAttempt: this.handleMatchAttempt,
             win: this.win
         });
+
         this.dex = new Dex();
 
-        this.domElements.statsArea = this.renderStats();
-        this.domElements.container.append(this.domElements.statsArea);
+        setTimeout(() => {
+            this.domElements.statsArea = this.renderStats();
+            this.domElements.container.append(this.domElements.statsArea);
 
-        this.domElements.gameArea = this.board.render();
-        this.domElements.container.append(this.domElements.gameArea);
+            this.domElements.gameArea = this.board.render();
+            this.domElements.container.append(this.domElements.gameArea);
 
-        this.domElements.dexArea = this.dex.render();
-        this.domElements.container.append(this.domElements.dexArea);
+            this.domElements.dexArea = this.dex.render();
+            this.domElements.container.append(this.domElements.dexArea);
 
-        this.addEventListeners();
+            this.addEventListeners();
+            this.addAnimations();
+        }, 100);
     }
 
     addEventListeners() {
-        $('.reset-button').on('click', this.handleReshuffleButton);
-        $('.bgm-button').on('click', this.handleMusicButton);
+        $('#new-game-button').on('click', this.confirmNewGame);
+        $('#continue-button').on('click', this.checkForSaveData);
+        $('#reset-button').on('click', this.handleReshuffleButton);
+        $('#bgm-button').on('click', this.handleMusicButton);
+        $('button').on('click', () => {console.log('clcked'); this.sounds.playSound('beep')});
+        $(this.domElements.container).on('click', '.modal-button', () => {console.log('clcked'); this.sounds.playSound('beep2')});
+    }
+
+    addAnimations() {
+        $('header').on('mouseenter', function() {
+            $('.logo-area').addClass('furret-jump');
+        });
+
+        $('.logo-area').on('webkitAnimationEnd mozAnimationEnd animationend', function () {
+            $(this).removeClass('furret-jump');
+        });
+    }
+
+    confirmNewGame() {
+        if (localStorage.getItem('captured')) {
+            const modal = new Modal({
+                text: 'Starting a new game will overwrite the saved game data. Continue?',
+                confirmButton: 'Yes',
+                confirmHandler: this.startNewGame,
+                rejectButton: 'No'
+            });
+            this.domElements.container.append(modal.render());
+        } else {
+            this.startGame();
+        }
+    }
+
+    checkForSaveData() {
+        if (localStorage.getItem('captured')) {
+            this.continueGame();
+            console.log('loading');
+        } else {
+            const modal = new Modal({
+                text: 'No save data found. Please start a new game.',
+                confirmButton: 'OK'
+            });
+            this.domElements.container.append(modal.render());
+        }
+    }
+
+    startNewGame() {
+        this.sounds.playSound('beep');
+        localStorage.removeItem('captured');
+        localStorage.removeItem('gamesPlayed');
+        this.startGame();
+    }
+    
+    startGame() {
+        $('.loading-page').addClass('hidden');
+        this.sounds.startBGM();
+        setTimeout(() => {
+            $('.loading-page').remove();
+        }, 750)
+    }
+    
+    continueGame() {
+        this.sounds.playSound('beep');
+        this.loadData();
+        this.startGame();
     }
 
     win() {
@@ -61,17 +137,18 @@ class Match {
         this.stats.attempts = 0;
         this.stats.gamesPlayed++;
         this.updateStats();
+        localStorage.setItem('gamesPlayed', this.stats.gamesPlayed);
         this.board.randomizeCards();
         $('.win-text > .label').addClass('hidden');
     }
 
     handleMusicButton() {
         console.log('test');
-        this.sounds.sounds.bgm.muted = !this.sounds.sounds.bgm.muted;
-        if (this.sounds.sounds.bgm.muted) {
-            $('.bgm-button').addClass('disabled');
+        const muted = this.sounds.toggleBGM();
+        if (muted) {
+            $('#bgm-button').addClass('disabled');
         } else {
-            $('.bgm-button').removeClass('disabled');
+            $('#bgm-button').removeClass('disabled');
         }
     }
 
@@ -101,7 +178,7 @@ class Match {
                     this.dex.capture(card.num);
 
                     if (this.stats.matches === 9) {
-                        this.sounds.playSound('fanfare');
+                        this.sounds.playFanfare();
                         this.win();
                     }
 
@@ -112,15 +189,16 @@ class Match {
                         card.unflip();
                         firstCard.unflip();
                         this.canClick = true;
-                    }, 1500)
+                    }, 1250)
                 }
 
                 this.firstCard = null;
                 this.updateStats();
+                this.saveData();
 
             // otherwise, it's the first card in current match attempt - store it
             } else {
-                this.sounds.playSound('beep');
+                this.sounds.playSound('beep2');
                 this.firstCard = card;
             }
         }
@@ -141,11 +219,46 @@ class Match {
                         $('<div>', {class: 'value', text: '0.00%'})),
                     $('<div>', {class: 'win-text'}).append(
                         $('<div>', {class: 'label hidden', text: 'You win! Click on reshuffle for more.'})),
-                    $('<button>', {class: 'reset-button', text: 'Reshuffle'}),
-                    $('<button>', {class: 'bg-button', text: 'Music'})
+                    $('<button>', {id: 'reset-button', text: 'Reshuffle', class: 'stats-button'}),
+                    $('<button>', {id: 'bgm-button', text: 'Music', class: 'stats-button'})
                 )
             );
 
         return this.domElements.statsArea;
+    }
+
+    saveData() {
+        localStorage.setItem('captured', JSON.stringify(this.dex.captured))
+    }
+
+    loadData() {
+        const gamesPlayed = parseInt(localStorage.getItem('gamesPlayed'));
+        const captured = JSON.parse(localStorage.getItem('captured'));
+
+        if (Array.isArray(captured)) {
+            this.stats.gamesPlayed = gamesPlayed;
+
+            for (let i = 0; i < captured.length; i++) {
+                if (captured[i]) {
+                    this.dex.capture(i, false);
+                }
+            }
+
+            $('.selected').removeClass('selected');
+        }
+
+        this.updateStats();
+    }
+
+    renderLandingPage() {
+        this.domElements.container.prepend(
+            $('<div>', {class: 'loading-page'}).append(
+                $('<div>', {class: 'spinner'}),
+                $('<div>', {class: 'loading-page-buttons'}).append(
+                    $('<button>', {id: 'new-game-button', text: 'New Game'}),
+                    $('<button>', {id: 'continue-button', text: 'Continue'})
+                )
+            )
+        );
     }
 }

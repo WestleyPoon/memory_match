@@ -51,4 +51,10 @@ class Board {
 
         return this.domElement;
     }
+
+    testReveal() {
+        for (let i = 0; i < this.cards.length; i++) {
+            this.cards[i].flip();
+        }
+    }
 }

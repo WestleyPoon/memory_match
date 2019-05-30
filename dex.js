@@ -4,26 +4,32 @@ class Dex {
         this.dexEntryHolderElement = null;
 
         this.dex = [];
+        this.captured = [];
         this.numCaptured = 0;
         this.lastCaptured = null;
     }
 
-    capture(num) {
+    capture(num, scroll = true) {
+        this.captured[num] = 1;
         if (this.dex[num].captureCheck()) {
             this.numCaptured++;
 
-            const scrollTo = this.domElement.height() / (151 / 6) * (num / 6);
-            const scrollDuration = Math.abs(scrollTo - this.dexEntryHolderElement.scrollTop());
+            if (scroll) {
+                // get the height of the dex area, and calculate the pokemon's position
+                const scrollTo = this.domElement.height() / (151 / 6) * Math.floor(num / 6);
+                // change the duration of the scroll animation based on distance to scroll
+                const scrollDuration = Math.abs(scrollTo - this.dexEntryHolderElement.scrollTop());
 
-            this.dexEntryHolderElement.animate({
-                scrollTop: scrollTo
-            }, 1000 + scrollDuration);
+                this.dexEntryHolderElement.animate({
+                    scrollTop: scrollTo
+                }, 1000 + scrollDuration);
+            }
         }
         this.updateStats();
     }
 
     updateStats() {
-        $('.dex-num').text(this.numCaptured);
+        $('.dex-counter').text(this.numCaptured);
     }
 
     render() {
@@ -32,7 +38,7 @@ class Dex {
         const dexInner = $('<div>', {class: 'dex-inner'}).append(
             $('<div>', {class: 'dex-header'}).append(
                 $('<span>', {class: 'label', text: 'PokeDex:'}),
-                $('<span>', {class: 'dex-num', text: '0'})
+                $('<span>', {class: 'dex-counter', text: '0'})
             )
         );
 
@@ -49,5 +55,14 @@ class Dex {
         this.domElement.append(dexInner);
 
         return this.domElement;
+    }
+
+    testFill() {
+        for (let i = 0; i < this.dex.length; i++) {
+            if (this.dex[i].captureCheck()) {
+                this.numCaptured++;
+            }
+        }
+        this.updateStats();
     }
 }
