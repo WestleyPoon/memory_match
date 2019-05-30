@@ -58,7 +58,7 @@ class Match {
 
             this.addEventListeners();
             this.addAnimations();
-        }, 100);
+        }, 500);
     }
 
     addEventListeners() {
@@ -236,7 +236,7 @@ class Match {
         const captured = JSON.parse(localStorage.getItem('captured'));
 
         if (Array.isArray(captured)) {
-            this.stats.gamesPlayed = gamesPlayed;
+            this.stats.gamesPlayed = gamesPlayed ? gamesPlayed : 0;
 
             for (let i = 0; i < captured.length; i++) {
                 if (captured[i]) {
