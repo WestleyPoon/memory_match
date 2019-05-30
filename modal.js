@@ -13,25 +13,26 @@ class Modal {
         this.close = this.close.bind(this);
     }
 
-    close(event) {
-        if (event.target === event.currentTarget) {
-            event.stopPropagation();
+    close() {
+        setTimeout(() => {
             this.domElement.remove();
-        }
+        }, 25);
     }
 
-    confirm(event) {
-        this.close(event, this);
+    confirm() {
+        this.close();
         this.confirmHandler();
     }
 
-    reject(event) {
-        this.close(event, this);
+    reject() {
+        this.close();
         this.rejectHandler();
     }
 
     render() {
-        this.domElement = $('<div>', {class: 'modal'}).on('click', this.close);
+        this.domElement = $('<div>', {class: 'modal-outer'});
+
+        const shadow = $('<div>', {class: 'modal'}).on('click', this.close);
 
         const modalContent = $('<div>', {class: 'modal-content'}).append(
             $('<div>', {class: 'modal-text'}).append(
@@ -40,18 +41,18 @@ class Modal {
 
         const modalButtons = $('<div>', {class: 'modal-buttons'});
 
-        const confirmButton = $('<button>', {class: 'modal-confirm', text: this.confirmButton});
+        const confirmButton = $('<button>', {id: 'modal-confirm', text: this.confirmButton, class: 'modal-button'});
         confirmButton.on('click', this.confirmHandler ? this.confirm : this.close);
         modalButtons.append(confirmButton);
 
         if (this.rejectButton) {
-            const rejectButton = $('<button>', {class: 'modal-reject', text: this.rejectButton});
-            rejectButton.on('click', this.rejectHandler? this.reject : this.close);
+            const rejectButton = $('<button>', {id: 'modal-reject', text: this.rejectButton, class: 'modal-button'});
+            rejectButton.on('click', this.rejectHandler ? this.reject : this.close);
             modalButtons.append(rejectButton);
         }
 
         modalContent.append(modalButtons);
-        this.domElement.append(modalContent);
+        this.domElement.append(shadow, modalContent);
 
         return this.domElement;
     }

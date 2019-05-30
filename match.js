@@ -1,5 +1,5 @@
 class Match {
-    constructor(container, matches) {
+    constructor(container) {
         this.domElements = {
             container: container,
             statsArea: null,
@@ -14,7 +14,7 @@ class Match {
         this.stats = {
             matches: 0,
             gamesPlayed: 0,
-            attempts: 0,
+            attempts: 0
         };
 
         this.firstCard = null;
@@ -34,9 +34,10 @@ class Match {
     }
 
     start() {
-        this.renderLoadingPage();
-
         this.sounds = new Sounds();
+
+        this.renderLandingPage();
+
         this.board = new Board({
             playSound: this.sounds.playSound,
             handleMatchAttempt: this.handleMatchAttempt,
@@ -61,10 +62,12 @@ class Match {
     }
 
     addEventListeners() {
-        $('.new-game-button').on('click', this.confirmNewGame);
-        $('.continue-button').on('click', this.checkForSaveData);
-        $('.reset-button').on('click', this.handleReshuffleButton);
-        $('.bgm-button').on('click', this.handleMusicButton);
+        $('#new-game-button').on('click', this.confirmNewGame);
+        $('#continue-button').on('click', this.checkForSaveData);
+        $('#reset-button').on('click', this.handleReshuffleButton);
+        $('#bgm-button').on('click', this.handleMusicButton);
+        $('button').on('click', () => {console.log('clcked'); this.sounds.playSound('beep')});
+        $(this.domElements.container).on('click', '.modal-button', () => {console.log('clcked'); this.sounds.playSound('beep2')});
     }
 
     addAnimations() {
@@ -94,6 +97,7 @@ class Match {
     checkForSaveData() {
         if (localStorage.getItem('captured')) {
             this.continueGame();
+            console.log('loading');
         } else {
             const modal = new Modal({
                 text: 'No save data found. Please start a new game.',
@@ -104,6 +108,7 @@ class Match {
     }
 
     startNewGame() {
+        this.sounds.playSound('beep');
         localStorage.removeItem('captured');
         localStorage.removeItem('gamesPlayed');
         this.startGame();
@@ -111,12 +116,14 @@ class Match {
     
     startGame() {
         $('.loading-page').addClass('hidden');
+        this.sounds.startBGM();
         setTimeout(() => {
             $('.loading-page').remove();
         }, 750)
     }
     
     continueGame() {
+        this.sounds.playSound('beep');
         this.loadData();
         this.startGame();
     }
@@ -137,11 +144,11 @@ class Match {
 
     handleMusicButton() {
         console.log('test');
-        this.sounds.sounds.bgm.muted = !this.sounds.sounds.bgm.muted;
-        if (this.sounds.sounds.bgm.muted) {
-            $('.bgm-button').addClass('disabled');
+        const muted = this.sounds.toggleBGM();
+        if (muted) {
+            $('#bgm-button').addClass('disabled');
         } else {
-            $('.bgm-button').removeClass('disabled');
+            $('#bgm-button').removeClass('disabled');
         }
     }
 
@@ -171,7 +178,7 @@ class Match {
                     this.dex.capture(card.num);
 
                     if (this.stats.matches === 9) {
-                        this.sounds.playSound('fanfare');
+                        this.sounds.playFanfare();
                         this.win();
                     }
 
@@ -191,7 +198,7 @@ class Match {
 
             // otherwise, it's the first card in current match attempt - store it
             } else {
-                this.sounds.playSound('beep');
+                this.sounds.playSound('beep2');
                 this.firstCard = card;
             }
         }
@@ -212,8 +219,8 @@ class Match {
                         $('<div>', {class: 'value', text: '0.00%'})),
                     $('<div>', {class: 'win-text'}).append(
                         $('<div>', {class: 'label hidden', text: 'You win! Click on reshuffle for more.'})),
-                    $('<button>', {class: 'reset-button', text: 'Reshuffle'}),
-                    $('<button>', {class: 'bg-button', text: 'Music'})
+                    $('<button>', {id: 'reset-button', text: 'Reshuffle', class: 'stats-button'}),
+                    $('<button>', {id: 'bgm-button', text: 'Music', class: 'stats-button'})
                 )
             );
 
@@ -228,7 +235,7 @@ class Match {
         const gamesPlayed = parseInt(localStorage.getItem('gamesPlayed'));
         const captured = JSON.parse(localStorage.getItem('captured'));
 
-        if (gamesPlayed && Array.isArray(captured)) {
+        if (Array.isArray(captured)) {
             this.stats.gamesPlayed = gamesPlayed;
 
             for (let i = 0; i < captured.length; i++) {
@@ -243,13 +250,13 @@ class Match {
         this.updateStats();
     }
 
-    renderLoadingPage() {
+    renderLandingPage() {
         this.domElements.container.prepend(
             $('<div>', {class: 'loading-page'}).append(
                 $('<div>', {class: 'spinner'}),
                 $('<div>', {class: 'loading-page-buttons'}).append(
-                    $('<button>', {class: 'new-game-button', text: 'New Game'}),
-                    $('<button>', {class: 'continue-button', text: 'Continue'})
+                    $('<button>', {id: 'new-game-button', text: 'New Game'}),
+                    $('<button>', {id: 'continue-button', text: 'Continue'})
                 )
             )
         );
