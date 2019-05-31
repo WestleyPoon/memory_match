@@ -1,19 +1,23 @@
 class Board {
     constructor(callbacks) {
-        this.cards = [];
-
         this.domElement = null;
-        this.cardContainerElement = null;
         this.callbacks = callbacks;
 
         this.randomizeCards = this.randomizeCards.bind(this);
     }
 
+    render() {
+        const gameArea = $('<div>', {class: 'game-area'});
+        this.domElement = $('<div>', {class: 'cards-container'});
+        gameArea.append(this.domElement);
+
+        this.randomizeCards();
+        return gameArea;
+    }
+
     randomizeCards() {
         let num, i, temp;
-
-        this.cardContainerElement.empty();
-        this.cards = [];
+        this.domElement.empty();
 
         // generate 9 random numbers, representing pokemon, and add to storage
         const cardNums = [];
@@ -38,23 +42,6 @@ class Board {
 
     addCard(num) {
         const newCard = new Card(num, this.callbacks);
-        this.cardContainerElement.append(newCard.render());
-        this.cards.push(newCard);
-    }
-
-    render() {
-        this.domElement = $('<div>', {class: 'game-area'});
-        this.cardContainerElement = $('<div>', {class: 'card-container'});
-        this.domElement.append(this.cardContainerElement);
-
-        this.randomizeCards();
-
-        return this.domElement;
-    }
-
-    testReveal() {
-        for (let i = 0; i < this.cards.length; i++) {
-            this.cards[i].flip();
-        }
+        this.domElement.append(newCard.render());
     }
 }
