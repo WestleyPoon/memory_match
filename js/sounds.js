@@ -9,11 +9,11 @@ class Sounds {
             bgm: new Audio('sounds/azalea.mp3'),
         };
 
-        this.setVolume();
-        this.addEventListeners();
-
         this.playSound = this.playSound.bind(this);
         this.toggleBGM = this.toggleBGM.bind(this);
+
+        this.setVolume();
+        this.addEventListeners();
     }
 
     setVolume() {
@@ -35,9 +35,8 @@ class Sounds {
     }
 
     startBGM() {
-        const {bgm} = this.sounds;
-        bgm.loop = true;
-        bgm.play();
+        this.sounds.bgm.loop = true;
+        this.sounds.bgm.play();
     }
 
     playSound(sound) {
@@ -50,8 +49,7 @@ class Sounds {
     }
 
     playFanfare() {
-        const {bgm, fanfare} = this.sounds;
-        bgm.pause();
-        fanfare.play();
+        this.sounds.bgm.pause();
+        this.sounds.fanfare.play();
     }
 }

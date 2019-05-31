@@ -1,12 +1,12 @@
 class Modal {
     constructor(options) {
-        this.domElement = null;
-
         this.text = options.text;
         this.confirmButton = options.confirmButton;
         this.confirmHandler = options.confirmHandler;
         this.rejectButton = options.rejectButton;
         this.rejectHandler = options.rejectHandler;
+
+        this.domElement = null;
 
         this.confirm = this.confirm.bind(this);
         this.reject = this.reject.bind(this);
@@ -35,8 +35,12 @@ class Modal {
             modalButtons.append(rejectButton);
         }
 
-        modalContent.append(modalButtons);
-        this.domElement.append(shadow, modalContent);
+        this.domElement.append(
+            shadow,
+            modalContent.append(
+                modalButtons
+            )
+        );
 
         return this.domElement;
     }

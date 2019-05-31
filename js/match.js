@@ -1,24 +1,17 @@
 class Match {
     constructor(container) {
-        this.domElements = {
-            container: container,
-            statsArea: null,
-            gameArea: null,
-            dexArea: null
-        };
-
         this.board = null;
         this.dex = null;
         this.sounds = null;
-
+        this.firstCard = null;
+        this.canClick = true;
         this.stats = {
             matches: 0,
             gamesPlayed: 0,
             attempts: 0
         };
 
-        this.firstCard = null;
-        this.canClick = true;
+        this.domElement = container;
 
         this.confirmNewGame = this.confirmNewGame.bind(this);
         this.startNewGame = this.startNewGame.bind(this);
@@ -35,33 +28,27 @@ class Match {
 
     initialize() {
         this.sounds = new Sounds();
-
-        this.renderLandingPage();
-
         this.board = new Board({
-            playSound: this.sounds.playSound,
             handleMatchAttempt: this.handleMatchAttempt,
+            playSound: this.sounds.playSound,
             win: this.win
         });
-
         this.dex = new Dex();
 
-        setTimeout(() => {
-            this.domElements.statsArea = this.renderStats();
-            this.domElements.gameArea = this.board.render();
-            this.domElements.dexArea = this.dex.render();
+        this.makeLandingPage();
 
-            this.domElements.container.append(this.domElements.statsArea);
-            this.domElements.container.append(this.domElements.gameArea);
-            this.domElements.container.append(this.domElements.dexArea);
+        setTimeout(() => {
+            this.domElement.append(this.renderStats());
+            this.domElement.append(this.board.render());
+            this.domElement.append(this.dex.render());
 
             this.addEventListeners();
             this.addAnimations();
         }, 500);
     }
 
-    renderLandingPage() {
-        this.domElements.container.prepend(
+    makeLandingPage() {
+        this.domElement.prepend(
             $('<div>', {class: 'landing-page'}).append(
                 $('<div>', {class: 'spinner'}),
                 $('<div>', {class: 'landing-page-buttons'}).append(
@@ -73,7 +60,7 @@ class Match {
     }
 
     renderStats() {
-        this.domElements.statsArea =
+        const statsArea =
             $('<div>', {class: 'stats-area'}).append(
                 $('<div>', {class: 'stats-panel'}).append(
                     $('<div>', {class: 'games-played'}).append(
@@ -91,7 +78,7 @@ class Match {
                     $('<button>', {id: 'bgm-button', text: 'Music', class: 'stats-button'})
                 )
             );
-        return this.domElements.statsArea;
+        return statsArea;
     }
 
     addEventListeners() {
@@ -100,7 +87,7 @@ class Match {
         $('#reset-button').on('click', this.handleReshuffleButton);
         $('#bgm-button').on('click', this.handleMusicButton);
         $('button').on('click', () => {this.sounds.playSound('beep')});
-        $(this.domElements.container).on('click', '.modal-button', () => {this.sounds.playSound('beep2')});
+        $(this.domElement).on('click', '.modal-button', () => {this.sounds.playSound('beep2')});
     }
 
     addAnimations() {
@@ -121,9 +108,10 @@ class Match {
                 confirmHandler: this.startNewGame,
                 rejectButton: 'No'
             });
-            this.domElements.container.append(modal.render());
+            this.domElement.append(modal.render());
+
         } else {
-            this.startGame();
+            this.startNewGame();
         }
     }
 
@@ -144,7 +132,7 @@ class Match {
                 text: 'No save data found. Please initialize a new game.',
                 confirmButton: 'OK'
             });
-            this.domElements.container.append(modal.render());
+            this.domElement.append(modal.render());
         }
     }
 
@@ -160,7 +148,6 @@ class Match {
                     this.dex.capture(i, false);
                 }
             }
-
             $('.selected').removeClass('selected');
         }
 

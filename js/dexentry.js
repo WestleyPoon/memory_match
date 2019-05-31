@@ -1,11 +1,11 @@
 class DexEntry {
     constructor(num) {
+        this.num = num;
+        this.captured = false;
+
         this.domElement = null;
         this.textElement = null;
         this.imageElement = null;
-
-        this.num = num;
-        this.captured = false;
 
         this.handleClick = this.handleClick.bind(this);
     }
