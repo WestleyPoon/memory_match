@@ -11,6 +11,8 @@ class Board {
         this.domElement = $('<div>', {class: 'cards-container'});
         gameArea.append(this.domElement);
 
+        this.domElement.on('dragstart', '.grass', event => {event.preventDefault()});
+
         this.randomizeCards();
         return gameArea;
     }
