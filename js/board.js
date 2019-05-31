@@ -44,7 +44,7 @@ class Board {
 
     render() {
         this.domElement = $('<div>', {class: 'game-area'});
-        this.cardContainerElement = $('<div>', {class: 'card-container'});
+        this.cardContainerElement = $('<div>', {class: 'cards-container'});
         this.domElement.append(this.cardContainerElement);
 
         this.randomizeCards();

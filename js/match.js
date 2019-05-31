@@ -66,8 +66,8 @@ class Match {
         $('#continue-button').on('click', this.checkForSaveData);
         $('#reset-button').on('click', this.handleReshuffleButton);
         $('#bgm-button').on('click', this.handleMusicButton);
-        $('button').on('click', () => {console.log('clcked'); this.sounds.playSound('beep')});
-        $(this.domElements.container).on('click', '.modal-button', () => {console.log('clcked'); this.sounds.playSound('beep2')});
+        $('button').on('click', () => {this.sounds.playSound('beep')});
+        $(this.domElements.container).on('click', '.modal-button', () => {this.sounds.playSound('beep2')});
     }
 
     addAnimations() {
@@ -97,7 +97,6 @@ class Match {
     checkForSaveData() {
         if (localStorage.getItem('captured')) {
             this.continueGame();
-            console.log('loading');
         } else {
             const modal = new Modal({
                 text: 'No save data found. Please start a new game.',
@@ -115,10 +114,10 @@ class Match {
     }
     
     startGame() {
-        $('.loading-page').addClass('hidden');
+        $('.landing-page').addClass('hidden');
         this.sounds.startBGM();
         setTimeout(() => {
-            $('.loading-page').remove();
+            $('.landing-page').remove();
         }, 750)
     }
     
@@ -143,7 +142,6 @@ class Match {
     }
 
     handleMusicButton() {
-        console.log('test');
         const muted = this.sounds.toggleBGM();
         if (muted) {
             $('#bgm-button').addClass('disabled');
@@ -207,7 +205,7 @@ class Match {
     renderStats() {
         this.domElements.statsArea =
             $('<div>', {class: 'stats-area'}).append(
-                $('<div>', {class: 'stats-inner'}).append(
+                $('<div>', {class: 'stats-panel'}).append(
                     $('<div>', {class: 'games-played'}).append(
                         $('<div>', {class: 'label', text: 'Games Played'}),
                         $('<div>', {class: 'value', text: '0'})),
@@ -252,9 +250,9 @@ class Match {
 
     renderLandingPage() {
         this.domElements.container.prepend(
-            $('<div>', {class: 'loading-page'}).append(
+            $('<div>', {class: 'landing-page'}).append(
                 $('<div>', {class: 'spinner'}),
-                $('<div>', {class: 'loading-page-buttons'}).append(
+                $('<div>', {class: 'landing-page-buttons'}).append(
                     $('<button>', {id: 'new-game-button', text: 'New Game'}),
                     $('<button>', {id: 'continue-button', text: 'Continue'})
                 )

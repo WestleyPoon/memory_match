@@ -35,14 +35,14 @@ class Dex {
     render() {
         this.domElement = $('<div>', {class: 'dex-area'});
 
-        const dexInner = $('<div>', {class: 'dex-inner'}).append(
+        const dexInner = $('<div>', {class: 'dex-panel'}).append(
             $('<div>', {class: 'dex-header'}).append(
                 $('<span>', {class: 'label', text: 'PokeDex:'}),
                 $('<span>', {class: 'dex-counter', text: '0'})
             )
         );
 
-        this.dexEntryHolderElement = $('<div>', {class: 'dex-holder'});
+        this.dexEntryHolderElement = $('<div>', {class: 'dex-entries-holder'});
 
         let newEntry;
         for (let i = 0; i < 151; i++) {

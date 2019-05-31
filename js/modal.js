@@ -30,9 +30,9 @@ class Modal {
     }
 
     render() {
-        this.domElement = $('<div>', {class: 'modal-outer'});
+        this.domElement = $('<div>', {class: 'modal'});
 
-        const shadow = $('<div>', {class: 'modal'}).on('click', this.close);
+        const shadow = $('<div>', {class: 'modal-shadow'}).on('click', this.close);
 
         const modalContent = $('<div>', {class: 'modal-content'}).append(
             $('<div>', {class: 'modal-text'}).append(
