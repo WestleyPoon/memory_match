@@ -117,10 +117,14 @@ h1 {
 }
 
 .stats-button {
-    width: 70%;
+    width: 90%;
     font-size: 1em;
     margin-top: 15px;
     padding: 2%;
+}
+
+#bgm-button {
+    margin-bottom: 10px;
 }
 
 .win-text > .label {
@@ -195,7 +199,7 @@ h1 {
 }
 
 .dex-entries-holder {
-    height: 94%;
+    height: 92%;
     overflow: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* IE 10+ */
