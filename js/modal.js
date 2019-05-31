@@ -13,22 +13,6 @@ class Modal {
         this.close = this.close.bind(this);
     }
 
-    close() {
-        setTimeout(() => {
-            this.domElement.remove();
-        }, 25);
-    }
-
-    confirm() {
-        this.close();
-        this.confirmHandler();
-    }
-
-    reject() {
-        this.close();
-        this.rejectHandler();
-    }
-
     render() {
         this.domElement = $('<div>', {class: 'modal'});
 
@@ -55,5 +39,21 @@ class Modal {
         this.domElement.append(shadow, modalContent);
 
         return this.domElement;
+    }
+
+    confirm() {
+        this.close();
+        this.confirmHandler();
+    }
+
+    reject() {
+        this.close();
+        this.rejectHandler();
+    }
+
+    close() {
+        setTimeout(() => {
+            this.domElement.remove();
+        }, 25);
     }
 }

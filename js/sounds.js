@@ -34,24 +34,24 @@ class Sounds {
         });
     }
 
-    playSound(sound) {
-        this.sounds[sound].play();
-    }
-
     startBGM() {
         const {bgm} = this.sounds;
         bgm.loop = true;
         bgm.play();
     }
 
-    playFanfare() {
-        const {bgm, fanfare} = this.sounds;
-        bgm.pause();
-        fanfare.play();
+    playSound(sound) {
+        this.sounds[sound].play();
     }
 
     toggleBGM() {
         this.sounds.bgm.muted = !this.sounds.bgm.muted;
         return this.sounds.bgm.muted;
+    }
+
+    playFanfare() {
+        const {bgm, fanfare} = this.sounds;
+        bgm.pause();
+        fanfare.play();
     }
 }

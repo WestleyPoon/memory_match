@@ -6,30 +6,6 @@ class Dex {
         this.dex = [];
         this.captured = [];
         this.numCaptured = 0;
-        this.lastCaptured = null;
-    }
-
-    capture(num, scroll = true) {
-        this.captured[num] = 1;
-        if (this.dex[num].captureCheck()) {
-            this.numCaptured++;
-
-            if (scroll) {
-                // get the height of the dex area, and calculate the pokemon's position
-                const scrollTo = this.domElement.height() / (151 / 6) * Math.floor(num / 6);
-                // change the duration of the scroll animation based on distance to scroll
-                const scrollDuration = Math.abs(scrollTo - this.dexEntryHolderElement.scrollTop());
-
-                this.dexEntryHolderElement.animate({
-                    scrollTop: scrollTo
-                }, 1000 + scrollDuration);
-            }
-        }
-        this.updateStats();
-    }
-
-    updateStats() {
-        $('.dex-counter').text(this.numCaptured);
     }
 
     render() {
@@ -57,12 +33,26 @@ class Dex {
         return this.domElement;
     }
 
-    testFill() {
-        for (let i = 0; i < this.dex.length; i++) {
-            if (this.dex[i].captureCheck()) {
-                this.numCaptured++;
+    capture(num, scroll = true) {
+        this.captured[num] = 1;
+        if (this.dex[num].captureCheck()) {
+            this.numCaptured++;
+
+            if (scroll) {
+                // get the height of the dex area, and calculate the pokemon's position
+                const scrollTo = this.domElement.height() / (151 / 6) * Math.floor(num / 6);
+                // change the duration of the scroll animation based on distance to scroll
+                const scrollDuration = Math.abs(scrollTo - this.dexEntryHolderElement.scrollTop());
+
+                this.dexEntryHolderElement.animate({
+                    scrollTop: scrollTo
+                }, 1000 + scrollDuration);
             }
         }
         this.updateStats();
+    }
+
+    updateStats() {
+        $('.dex-counter').text(this.numCaptured);
     }
 }

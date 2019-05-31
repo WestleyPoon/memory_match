@@ -9,6 +9,15 @@ class Board {
         this.randomizeCards = this.randomizeCards.bind(this);
     }
 
+    render() {
+        this.domElement = $('<div>', {class: 'game-area'});
+        this.cardContainerElement = $('<div>', {class: 'cards-container'});
+        this.domElement.append(this.cardContainerElement);
+
+        this.randomizeCards();
+        return this.domElement;
+    }
+
     randomizeCards() {
         let num, i, temp;
 
@@ -40,21 +49,5 @@ class Board {
         const newCard = new Card(num, this.callbacks);
         this.cardContainerElement.append(newCard.render());
         this.cards.push(newCard);
-    }
-
-    render() {
-        this.domElement = $('<div>', {class: 'game-area'});
-        this.cardContainerElement = $('<div>', {class: 'cards-container'});
-        this.domElement.append(this.cardContainerElement);
-
-        this.randomizeCards();
-
-        return this.domElement;
-    }
-
-    testReveal() {
-        for (let i = 0; i < this.cards.length; i++) {
-            this.cards[i].flip();
-        }
     }
 }

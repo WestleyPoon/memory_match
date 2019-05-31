@@ -20,20 +20,20 @@ class Match {
         this.firstCard = null;
         this.canClick = true;
 
-        this.win = this.win.bind(this);
-        this.handleMusicButton = this.handleMusicButton.bind(this);
-        this.handleReshuffleButton = this.handleReshuffleButton.bind(this);
-        this.handleMatchAttempt = this.handleMatchAttempt.bind(this);
         this.confirmNewGame = this.confirmNewGame.bind(this);
-        this.startGame = this.startGame.bind(this);
-        this.checkForSaveData = this.checkForSaveData.bind(this);
-        this.saveData = this.saveData.bind(this);
         this.startNewGame = this.startNewGame.bind(this);
+        this.continueGame = this.continueGame.bind(this);
+        this.startGame = this.startGame.bind(this);
+        this.handleReshuffleButton = this.handleReshuffleButton.bind(this);
+        this.handleMusicButton = this.handleMusicButton.bind(this);
+        this.handleMatchAttempt = this.handleMatchAttempt.bind(this);
+        this.saveData = this.saveData.bind(this);
+        this.win = this.win.bind(this);
 
-        this.start()
+        this.initialize()
     }
 
-    start() {
+    initialize() {
         this.sounds = new Sounds();
 
         this.renderLandingPage();
@@ -48,12 +48,11 @@ class Match {
 
         setTimeout(() => {
             this.domElements.statsArea = this.renderStats();
-            this.domElements.container.append(this.domElements.statsArea);
-
             this.domElements.gameArea = this.board.render();
-            this.domElements.container.append(this.domElements.gameArea);
-
             this.domElements.dexArea = this.dex.render();
+
+            this.domElements.container.append(this.domElements.statsArea);
+            this.domElements.container.append(this.domElements.gameArea);
             this.domElements.container.append(this.domElements.dexArea);
 
             this.addEventListeners();
@@ -61,9 +60,43 @@ class Match {
         }, 500);
     }
 
+    renderLandingPage() {
+        this.domElements.container.prepend(
+            $('<div>', {class: 'landing-page'}).append(
+                $('<div>', {class: 'spinner'}),
+                $('<div>', {class: 'landing-page-buttons'}).append(
+                    $('<button>', {id: 'new-game-button', text: 'New Game'}),
+                    $('<button>', {id: 'continue-button', text: 'Continue'})
+                )
+            )
+        );
+    }
+
+    renderStats() {
+        this.domElements.statsArea =
+            $('<div>', {class: 'stats-area'}).append(
+                $('<div>', {class: 'stats-panel'}).append(
+                    $('<div>', {class: 'games-played'}).append(
+                        $('<div>', {class: 'label', text: 'Games Played'}),
+                        $('<div>', {class: 'value', text: '0'})),
+                    $('<div>', {class: 'attempts'}).append(
+                        $('<div>', {class: 'label', text: 'Attempts'}),
+                        $('<div>', {class: 'value', text: '0'})),
+                    $('<div>', {class: 'accuracy'}).append(
+                        $('<div>', {class: 'label', text: 'Accuracy'}),
+                        $('<div>', {class: 'value', text: '0.00%'})),
+                    $('<div>', {class: 'win-text'}).append(
+                        $('<div>', {class: 'label hidden', text: 'You win! Click on reshuffle for more.'})),
+                    $('<button>', {id: 'reset-button', text: 'Reshuffle', class: 'stats-button'}),
+                    $('<button>', {id: 'bgm-button', text: 'Music', class: 'stats-button'})
+                )
+            );
+        return this.domElements.statsArea;
+    }
+
     addEventListeners() {
         $('#new-game-button').on('click', this.confirmNewGame);
-        $('#continue-button').on('click', this.checkForSaveData);
+        $('#continue-button').on('click', this.continueGame);
         $('#reset-button').on('click', this.handleReshuffleButton);
         $('#bgm-button').on('click', this.handleMusicButton);
         $('button').on('click', () => {this.sounds.playSound('beep')});
@@ -94,23 +127,44 @@ class Match {
         }
     }
 
-    checkForSaveData() {
+    startNewGame() {
+        this.sounds.playSound('beep');
+        localStorage.removeItem('captured');
+        localStorage.removeItem('gamesPlayed');
+        this.startGame();
+    }
+
+    continueGame() {
         if (localStorage.getItem('captured')) {
-            this.continueGame();
+            this.sounds.playSound('beep');
+            this.loadData();
+            this.startGame();
         } else {
             const modal = new Modal({
-                text: 'No save data found. Please start a new game.',
+                text: 'No save data found. Please initialize a new game.',
                 confirmButton: 'OK'
             });
             this.domElements.container.append(modal.render());
         }
     }
 
-    startNewGame() {
-        this.sounds.playSound('beep');
-        localStorage.removeItem('captured');
-        localStorage.removeItem('gamesPlayed');
-        this.startGame();
+    loadData() {
+        const gamesPlayed = parseInt(localStorage.getItem('gamesPlayed'));
+        const captured = JSON.parse(localStorage.getItem('captured'));
+
+        if (Array.isArray(captured)) {
+            this.stats.gamesPlayed = gamesPlayed ? gamesPlayed : 0;
+
+            for (let i = 0; i < captured.length; i++) {
+                if (captured[i]) {
+                    this.dex.capture(i, false);
+                }
+            }
+
+            $('.selected').removeClass('selected');
+        }
+
+        this.updateStats();
     }
     
     startGame() {
@@ -119,16 +173,6 @@ class Match {
         setTimeout(() => {
             $('.landing-page').remove();
         }, 750)
-    }
-    
-    continueGame() {
-        this.sounds.playSound('beep');
-        this.loadData();
-        this.startGame();
-    }
-
-    win() {
-        $('.win-text > .label').removeClass('hidden');
     }
 
     handleReshuffleButton() {
@@ -150,15 +194,8 @@ class Match {
         }
     }
 
-    updateStats() {
-        const {gamesPlayed, attempts, matches} = this.stats;
-        $('.games-played > .value').text(gamesPlayed);
-        $('.attempts > .value').text(attempts);
-        $('.accuracy > .value').text(`${(matches ? matches / attempts * 100 : 0).toFixed(2)}%`);
-    }
-
     handleMatchAttempt(card) {
-        // canClick prevents match attempts during 1.5s before cards flip back on incorrect match
+        // canClick prevents match attempts during 1.25s before cards flip back on incorrect match
         // card.revealed prevents clicking again on card that has already been clicked
         if (this.canClick && !card.revealed) {
             card.flip();
@@ -202,61 +239,18 @@ class Match {
         }
     }
 
-    renderStats() {
-        this.domElements.statsArea =
-            $('<div>', {class: 'stats-area'}).append(
-                $('<div>', {class: 'stats-panel'}).append(
-                    $('<div>', {class: 'games-played'}).append(
-                        $('<div>', {class: 'label', text: 'Games Played'}),
-                        $('<div>', {class: 'value', text: '0'})),
-                    $('<div>', {class: 'attempts'}).append(
-                        $('<div>', {class: 'label', text: 'Attempts'}),
-                        $('<div>', {class: 'value', text: '0'})),
-                    $('<div>', {class: 'accuracy'}).append(
-                        $('<div>', {class: 'label', text: 'Accuracy'}),
-                        $('<div>', {class: 'value', text: '0.00%'})),
-                    $('<div>', {class: 'win-text'}).append(
-                        $('<div>', {class: 'label hidden', text: 'You win! Click on reshuffle for more.'})),
-                    $('<button>', {id: 'reset-button', text: 'Reshuffle', class: 'stats-button'}),
-                    $('<button>', {id: 'bgm-button', text: 'Music', class: 'stats-button'})
-                )
-            );
-
-        return this.domElements.statsArea;
+    updateStats() {
+        const {gamesPlayed, attempts, matches} = this.stats;
+        $('.games-played > .value').text(gamesPlayed);
+        $('.attempts > .value').text(attempts);
+        $('.accuracy > .value').text(`${(matches ? matches / attempts * 100 : 0).toFixed(2)}%`);
     }
 
     saveData() {
         localStorage.setItem('captured', JSON.stringify(this.dex.captured))
     }
 
-    loadData() {
-        const gamesPlayed = parseInt(localStorage.getItem('gamesPlayed'));
-        const captured = JSON.parse(localStorage.getItem('captured'));
-
-        if (Array.isArray(captured)) {
-            this.stats.gamesPlayed = gamesPlayed ? gamesPlayed : 0;
-
-            for (let i = 0; i < captured.length; i++) {
-                if (captured[i]) {
-                    this.dex.capture(i, false);
-                }
-            }
-
-            $('.selected').removeClass('selected');
-        }
-
-        this.updateStats();
-    }
-
-    renderLandingPage() {
-        this.domElements.container.prepend(
-            $('<div>', {class: 'landing-page'}).append(
-                $('<div>', {class: 'spinner'}),
-                $('<div>', {class: 'landing-page-buttons'}).append(
-                    $('<button>', {id: 'new-game-button', text: 'New Game'}),
-                    $('<button>', {id: 'continue-button', text: 'Continue'})
-                )
-            )
-        );
+    win() {
+        $('.win-text > .label').removeClass('hidden');
     }
 }
