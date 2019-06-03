@@ -43,15 +43,36 @@ class Dex {
             this.numCaptured++;
 
             if (scroll) {
-                // get the height of the dex area, and calculate the pokemon's position
-                const scrollTo = this.domElement.height() / (151 / 4) * Math.floor(num / 4);
+                // top and bottom offsets of inner dex element
+                const dex = this.dexEntriesHolderElement[0];
+                const dexTop = dex.scrollTop;
+                const dexBottom = dexTop + dex.clientHeight;
 
-                // change the duration of the scroll animation based on distance to scroll
-                const scrollDuration = Math.abs(scrollTo - this.dexEntriesHolderElement.scrollTop());
+                // top and bottom offsets of the specific dex entry
+                const entryTop = this.dex[num].domElement[0].offsetTop - this.dex[0].domElement[0].offsetTop;
+                const entryBottom = entryTop + this.dex[num].domElement[0].clientHeight;
 
-                this.dexEntriesHolderElement.animate({
-                    scrollTop: scrollTo
-                }, 1000 + scrollDuration);
+                const isVisible = (entryTop >= dexTop) && (entryBottom <= dexBottom);
+                console.log(`thing is${isVisible ? '' : ' not'} in view`);
+
+                if (!isVisible) {
+                    // get the size of the dex entries holder and subtract the viewable height from it
+                    const scrollRange = dex.scrollHeight - dex.clientHeight;
+
+                    // using the scroll range, calculate the point to scroll to based on the pokemon caught
+                    // dex is currently 4 columns wide, so divide by 4
+                    const scrollTo = scrollRange / Math.floor(151 / 4) * Math.floor(num / 4);
+
+                    // change the duration of the scroll animation based on distance to scroll
+                    const scrollDuration = Math.abs(scrollTo - this.dexEntriesHolderElement[0].scrollTop) / 2;
+
+                    this.dexEntriesHolderElement.animate({
+                        scrollTop: scrollTo
+                    }, {
+                        duration: 1000 + scrollDuration,
+                        queue: true
+                    });
+                }
             }
         }
 

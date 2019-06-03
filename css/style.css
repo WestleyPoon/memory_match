@@ -162,6 +162,7 @@ h1 {
     margin: 10px 0;
     perspective: 1000px;
     -moz-user-select: none;
+    transition: opacity .05s linear;
 }
 
 .card-inner, .front, .back, .grass {
