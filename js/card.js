@@ -55,4 +55,8 @@ class Card {
         this.domElement.removeClass('flipped');
         this.revealed = false;
     }
+
+    fadeOut() {
+
+    }
 }
