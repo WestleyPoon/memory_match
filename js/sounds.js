@@ -7,6 +7,7 @@ class Sounds {
             right: new Audio('sounds/right.mp3'),
             wrong: new Audio('sounds/wrong.mp3'),
             bgm: new Audio('sounds/azalea.mp3'),
+            flee: new Audio('sounds/flee.mp3')
         };
 
         this.playSound = this.playSound.bind(this);
@@ -23,6 +24,7 @@ class Sounds {
         this.sounds.right.volume = .7;
         this.sounds.wrong.volume = .5;
         this.sounds.bgm.volume = .25;
+        this.sounds.flee.volume = .6;
     }
 
     addEventListeners() {
