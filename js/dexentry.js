@@ -26,7 +26,6 @@ class DexEntry {
     }
 
     captureCheck() {
-        this.select();
         if (!this.captured) {
             this.captured = true;
             this.textElement.css({color: 'var(--text-color)'});
@@ -43,5 +42,13 @@ class DexEntry {
     select() {
         $('.selected').removeClass('selected');
         this.domElement.addClass('selected');
+    }
+
+    captureFlash() {
+        this.select();
+        this.domElement.addClass('blink');
+        setTimeout(() => {
+            this.domElement.removeClass('blink');
+        }, 1500);
     }
 }

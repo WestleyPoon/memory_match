@@ -5,6 +5,7 @@ class Match {
         this.sounds = null;
         this.firstCard = null;
         this.canClick = true;
+        this.canShuffle = true;
         this.stats = {
             matches: 0,
             gamesPlayed: 0,
@@ -84,9 +85,15 @@ class Match {
     addEventListeners() {
         $('#new-game-button').on('click', this.confirmNewGame);
         $('#continue-button').on('click', this.continueGame);
-        $('#reset-button').on('click', this.handleReshuffleButton);
-        $('#bgm-button').on('click', this.handleMusicButton);
-        $('button').on('click', () => {this.sounds.playSound('beep')});
+        $('#reset-button').on('click', () => {
+            this.sounds.playSound('flee');
+            this.handleReshuffleButton();
+        });
+        $('#bgm-button').on('click', () => {
+            this.sounds.playSound('beep');
+            this.handleMusicButton();
+        });
+        // $('button').on('click', () => {this.sounds.playSound('beep')});
         $(this.domElement).on('click', '.modal-button', () => {this.sounds.playSound('beep2')});
     }
 
@@ -159,17 +166,27 @@ class Match {
         this.sounds.startBGM();
         setTimeout(() => {
             $('.landing-page').remove();
-        }, 750)
+        }, 500)
     }
 
     handleReshuffleButton() {
-        this.stats.matches = 0;
-        this.stats.attempts = 0;
-        this.stats.gamesPlayed++;
-        this.updateStats();
-        localStorage.setItem('gamesPlayed', this.stats.gamesPlayed);
-        this.board.randomizeCards();
-        $('.win-text > .label').addClass('hidden');
+        if (this.canShuffle) {
+            this.canShuffle = false;
+
+            this.stats.matches = 0;
+            this.stats.attempts = 0;
+            this.stats.gamesPlayed++;
+            this.firstCard = null;
+            this.updateStats();
+            localStorage.setItem('gamesPlayed', this.stats.gamesPlayed);
+            $('.win-text > .label').addClass('hidden');
+
+            // reenable the shuffle button
+            setTimeout(() => {
+                this.canShuffle = true;
+            }, 50 * this.board.cards.length * 2);
+            this.board.shuffleCards();
+        }
     }
 
     handleMusicButton() {

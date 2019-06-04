@@ -53,7 +53,6 @@ class Dex {
                 const entryBottom = entryTop + this.dex[num].domElement[0].clientHeight;
 
                 const isVisible = (entryTop >= dexTop) && (entryBottom <= dexBottom);
-                console.log(`thing is${isVisible ? '' : ' not'} in view`);
 
                 if (!isVisible) {
                     // get the size of the dex entries holder and subtract the viewable height from it
@@ -70,7 +69,8 @@ class Dex {
                         scrollTop: scrollTo
                     }, {
                         duration: 1000 + scrollDuration,
-                        queue: true
+                        queue: true,
+                        complete: () => {this.dex[num].captureFlash()}
                     });
                 }
             }

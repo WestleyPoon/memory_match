@@ -4,6 +4,7 @@ class Card {
         this.revealed = false;
 
         this.domElement = null;
+        this.innerCardElement = null;
         this.callbacks = {
             playSound: callbacks.playSound,
             handleMatchAttempt: callbacks.handleMatchAttempt
@@ -19,8 +20,8 @@ class Card {
         const row = Math.floor(this.num / 28);
         const col = this.num % 28;
 
-        const card = $('<div>', {class: 'card'});
-        this.domElement = $('<div>', {class: 'card-inner'});
+        this.domElement = $('<div>', {class: 'card hidden'});
+        this.innerCardElement = $('<div>', {class: 'card-inner'});
 
         // each sprite is 320x320, entire spritesheet is 8960 x 1920
         const front = $('<div>', {class: 'front', css: {
@@ -31,15 +32,15 @@ class Card {
             $('<img>', {class: 'grass', src: './images/grass.png', draggable: false})
         );
 
-        card.append(
-            this.domElement.append(
+        this.domElement.append(
+            this.innerCardElement.append(
                 front,
                 back
             )
         );
 
-        card.on('click', this.handleClick);
-        return card;
+        this.domElement.on('click', this.handleClick);
+        return this.domElement;
     }
 
     handleClick() {
@@ -47,16 +48,20 @@ class Card {
     }
 
     flip() {
-        this.domElement.addClass('flipped');
+        this.innerCardElement.addClass('flipped');
         this.revealed = true;
     }
 
     unflip() {
-        this.domElement.removeClass('flipped');
+        this.innerCardElement.removeClass('flipped');
         this.revealed = false;
     }
 
     fadeOut() {
+        this.domElement.addClass('hidden');
+    }
 
+    fadein() {
+        this.domElement.removeClass('hidden');
     }
 }
