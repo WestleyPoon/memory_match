@@ -238,8 +238,8 @@ h1 {
 .dex-header {
     font-size: 2rem;
     text-align: center;
-    margin-bottom: 1rem;
     line-height: 100%;
+    margin-bottom: .5rem;
 }
 
 .dex-counter {
@@ -247,7 +247,7 @@ h1 {
 }
 
 .dex-entries-holder {
-    height: calc(100% - 3rem);
+    height: calc(100% - 2.5rem);
     overflow: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* IE 10+ */
@@ -424,6 +424,10 @@ h1 {
         margin-bottom: 5px;
         margin-top: 15px;
     }
+
+    .dex-header {
+        margin: .15rem 0 .35rem;
+    }
 }
 
 @media screen and (max-width: 900px) {
@@ -434,6 +438,10 @@ h1 {
     #bgm-button {
         margin-bottom: 5px;
         margin-top: 10px;
+    }
+
+    .dex-header {
+        margin: .25rem 0 .25rem;
     }
 }
 
