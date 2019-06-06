@@ -72,6 +72,9 @@ class Dex {
                         queue: true,
                         complete: () => {this.dex[num].captureFlash()}
                     });
+
+                } else {
+                    this.dex[num].captureFlash()
                 }
             }
         }
