@@ -253,6 +253,7 @@ h1 {
     -ms-overflow-style: none;  /* IE 10+ */
     user-select: none;
     -webkit-user-select: none;
+    -webkit-overflow-scrolling: touch;
 }
 
 .dex-entries-holder::-webkit-scrollbar { /* WebKit */
