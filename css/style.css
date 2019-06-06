@@ -425,10 +425,6 @@ h1 {
         margin-top: 15px;
     }
 
-    .dex-entries-holder {
-        height: calc(100% - 2.5rem);
-    }
-
     .dex-header {
         margin: .15rem 0 .35rem;
     }
@@ -442,10 +438,6 @@ h1 {
     #bgm-button {
         margin-bottom: 5px;
         margin-top: 10px;
-    }
-
-    .dex-entries-holder {
-        height: calc(100% - 2.5rem);
     }
 
     .dex-header {
@@ -462,14 +454,6 @@ h1 {
         margin-bottom: 5px;
         margin-top: 8px;
     }
-
-    .dex-entries-holder {
-        height: calc(100% - 2.5rem);
-    }
-
-    .dex-header {
-        margin: .25rem 0 .25rem;
-    }
 }
 
 @media screen and (max-width: 600px) {
@@ -480,13 +464,5 @@ h1 {
     #bgm-button {
         margin-bottom: initial;
         margin-top: 8px;
-    }
-
-    .dex-entries-holder {
-        height: calc(100% - 2.5rem);
-    }
-
-    .dex-header {
-        margin: .25rem 0 .25rem;
     }
 }
