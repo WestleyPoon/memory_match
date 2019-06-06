@@ -141,7 +141,7 @@ class Match {
             this.startGame();
         } else {
             const modal = new Modal({
-                text: 'No save data found. Please initialize a new game.',
+                text: 'No save data found. Please start a new game.',
                 confirmButton: 'OK'
             });
             this.domElement.append(modal.render());
