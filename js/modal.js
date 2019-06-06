@@ -14,7 +14,7 @@ class Modal {
     }
 
     render() {
-        this.domElement = $('<div>', {class: 'modal'});
+        this.domElement = $('<div>', {class: 'modal hidden'});
 
         const shadow = $('<div>', {class: 'modal-shadow'}).on('click', this.close);
 
@@ -43,6 +43,10 @@ class Modal {
         );
 
         return this.domElement;
+    }
+
+    show() {
+        this.domElement.removeClass('hidden');
     }
 
     confirm() {

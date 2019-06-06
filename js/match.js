@@ -73,8 +73,6 @@ class Match {
                     $('<div>', {class: 'accuracy'}).append(
                         $('<div>', {class: 'label', text: 'Accuracy'}),
                         $('<div>', {class: 'value', text: '0.00%'})),
-                    $('<div>', {class: 'win-text'}).append(
-                        $('<div>', {class: 'label hidden', text: 'You win! Click on reshuffle for more.'})),
                     $('<button>', {id: 'reset-button', text: 'Reshuffle', class: 'stats-button'}),
                     $('<button>', {id: 'bgm-button', text: 'Music', class: 'stats-button'})
                 )
@@ -83,8 +81,14 @@ class Match {
     }
 
     addEventListeners() {
-        $('#new-game-button').on('click', this.confirmNewGame);
-        $('#continue-button').on('click', this.continueGame);
+        $('#new-game-button').on('click', () => {
+            this.sounds.playSound('beep');
+            this.confirmNewGame();
+        });
+        $('#continue-button').on('click', () => {
+            this.sounds.playSound('beep');
+            this.continueGame();
+        });
         $('#reset-button').on('click', () => {
             this.sounds.playSound('flee');
             this.handleReshuffleButton();
@@ -116,6 +120,7 @@ class Match {
                 rejectButton: 'No'
             });
             this.domElement.append(modal.render());
+            modal.show();
 
         } else {
             this.startNewGame();
@@ -140,6 +145,7 @@ class Match {
                 confirmButton: 'OK'
             });
             this.domElement.append(modal.render());
+            modal.show();
         }
     }
 
@@ -179,7 +185,6 @@ class Match {
             this.firstCard = null;
             this.updateStats();
             localStorage.setItem('gamesPlayed', this.stats.gamesPlayed);
-            $('.win-text > .label').addClass('hidden');
 
             // reenable the shuffle button
             setTimeout(() => {
@@ -255,6 +260,13 @@ class Match {
     }
 
     win() {
-        $('.win-text > .label').removeClass('hidden');
+        const modal = new Modal({
+            text: 'You win! Reshuffle board and continue?',
+            confirmButton: 'Continue',
+            confirmHandler: this.handleReshuffleButton,
+            rejectButton: 'View Board'
+        });
+        this.domElement.append(modal.render());
+        modal.show();
     }
 }

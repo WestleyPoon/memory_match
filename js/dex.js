@@ -6,6 +6,11 @@ class Dex {
 
         this.domElement = null;
         this.dexEntriesHolderElement = null;
+        this.dexInfoElement = null;
+        this.dexInfoInnerElement = null;
+
+        this.showInfo = this.showInfo.bind(this);
+        this.hideInfo = this.hideInfo.bind(this);
     }
 
     render() {
@@ -19,17 +24,23 @@ class Dex {
         );
 
         this.dexEntriesHolderElement = $('<div>', {class: 'dex-entries-holder'});
+        this.dexInfoElement = $('<div>', {class: 'dex-info collapsed hidden'});
+        this.dexInfoInnerElement = $('<div>', {class: 'dex-info-inner'});
+        this.dexInfoInnerElement.on('click', this.hideInfo);
 
         let newEntry;
         for (let i = 0; i < 151; i++) {
-            newEntry = new DexEntry(i);
+            newEntry = new DexEntry(i, {show: this.showInfo});
             this.dex.push(newEntry);
             this.dexEntriesHolderElement.append(newEntry.render());
         }
 
         this.domElement.append(
             dexPanel.append(
-                this.dexEntriesHolderElement
+                this.dexEntriesHolderElement,
+                this.dexInfoElement.append(
+                    this.dexInfoInnerElement
+                )
             )
         );
 
@@ -84,6 +95,25 @@ class Dex {
 
     updateStats() {
         $('.dex-counter').text(this.numCaptured);
+    }
+
+    showInfo(num) {
+        if (this.captured[num]) {
+            const row = Math.floor(num / 28);
+            const col = num % 28;
+
+            this.dexInfoInnerElement.css('background-position', `calc((${col} * 320%) / 86.40) calc((${row} * 320%) / 16.00)`);
+
+            this.dexInfoElement.removeClass('collapsed');
+            this.dexInfoElement.removeClass('hidden');
+        }
+    }
+
+    hideInfo() {
+        this.dexInfoElement.addClass('hidden');
+        setTimeout(() => {
+            this.dexInfoElement.addClass('collapsed');
+        }, 425);
     }
 
     testFill() {
