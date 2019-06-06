@@ -76,6 +76,7 @@ button {
     font-family: inherit;
     color: inherit;
     user-select: none;
+    -webkit-user-select: none;
     outline: none;
     border: 2px solid var(--text-color);
     border-radius: 10px;
@@ -184,6 +185,7 @@ h1 {
     justify-content: space-evenly;
     flex-wrap: wrap;
     user-select: none;
+    -webkit-user-select: none;
     padding: 5px;
 }
 
@@ -193,6 +195,7 @@ h1 {
     margin: 10px 0;
     perspective: 1000px;
     -moz-user-select: none;
+    -webkit-user-select: none;
     transition: opacity .25s linear;
 }
 
@@ -208,6 +211,7 @@ h1 {
 .front, .back {
     position: absolute;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     border-radius: 10px;
     transform: rotateX(0);
 }
@@ -243,11 +247,12 @@ h1 {
 }
 
 .dex-entries-holder {
-    height: 93%;
+    height: calc(100% - 3rem);
     overflow: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* IE 10+ */
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .dex-entries-holder::-webkit-scrollbar { /* WebKit */
