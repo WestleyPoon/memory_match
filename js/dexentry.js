@@ -1,7 +1,8 @@
 class DexEntry {
-    constructor(num) {
+    constructor(num, callbacks) {
         this.num = num;
         this.captured = false;
+        this.showInfo = callbacks.show;
 
         this.domElement = null;
         this.textElement = null;
@@ -37,6 +38,7 @@ class DexEntry {
 
     handleClick() {
         this.select();
+        this.showInfo(this.num);
     }
 
     select() {

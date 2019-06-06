@@ -40,6 +40,12 @@ class Card {
         );
 
         this.domElement.on('click', this.handleClick);
+        this.domElement.on('mouseenter', () => {
+            this.domElement.addClass('wiggle');
+            setTimeout(() => {
+                this.domElement.removeClass('wiggle');
+            }, 1000);
+        });
         return this.domElement;
     }
 
