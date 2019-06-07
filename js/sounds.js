@@ -7,13 +7,14 @@ class Sounds {
             right: new Audio('sounds/right.mp3'),
             wrong: new Audio('sounds/wrong.mp3'),
             bgm: new Audio('sounds/azalea.mp3'),
+            flee: new Audio('sounds/flee.mp3')
         };
-
-        this.setVolume();
-        this.addEventListeners();
 
         this.playSound = this.playSound.bind(this);
         this.toggleBGM = this.toggleBGM.bind(this);
+
+        this.setVolume();
+        this.addEventListeners();
     }
 
     setVolume() {
@@ -23,6 +24,7 @@ class Sounds {
         this.sounds.right.volume = .7;
         this.sounds.wrong.volume = .5;
         this.sounds.bgm.volume = .25;
+        this.sounds.flee.volume = .6;
     }
 
     addEventListeners() {
@@ -34,24 +36,22 @@ class Sounds {
         });
     }
 
+    startBGM() {
+        this.sounds.bgm.loop = true;
+        this.sounds.bgm.play();
+    }
+
     playSound(sound) {
         this.sounds[sound].play();
-    }
-
-    startBGM() {
-        const {bgm} = this.sounds;
-        bgm.loop = true;
-        bgm.play();
-    }
-
-    playFanfare() {
-        const {bgm, fanfare} = this.sounds;
-        bgm.pause();
-        fanfare.play();
     }
 
     toggleBGM() {
         this.sounds.bgm.muted = !this.sounds.bgm.muted;
         return this.sounds.bgm.muted;
+    }
+
+    playFanfare() {
+        this.sounds.bgm.pause();
+        this.sounds.fanfare.play();
     }
 }

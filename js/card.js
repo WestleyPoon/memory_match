@@ -4,7 +4,7 @@ class Card {
         this.revealed = false;
 
         this.domElement = null;
-        this.cardInnerElement = null;
+        this.innerCardElement = null;
         this.callbacks = {
             playSound: callbacks.playSound,
             handleMatchAttempt: callbacks.handleMatchAttempt
@@ -20,21 +20,32 @@ class Card {
         const row = Math.floor(this.num / 28);
         const col = this.num % 28;
 
-        this.domElement = $('<div>', {class: 'card'});
-        this.cardInnerElement = $('<div>', {class: 'card-inner'});
+        this.domElement = $('<div>', {class: 'card hidden'});
+        this.innerCardElement = $('<div>', {class: 'card-inner'});
 
         // each sprite is 320x320, entire spritesheet is 8960 x 1920
-        const front = $('<div>', {class: 'front'});
-        front.css({'background-position': `calc((${col} * 320%) / 86.40) calc((${row} * 320%) / 16.00)`});
+        const front = $('<div>', {class: 'front', css: {
+                'background-position': `calc((${col} * 320%) / 86.40) calc((${row} * 320%) / 16.00)`
+        }});
 
         const back = $('<div>', {class: 'back'}).append(
             $('<img>', {class: 'grass', src: './images/grass.png', draggable: false})
         );
 
-        this.cardInnerElement.append(front, back);
-        this.domElement.append(this.cardInnerElement);
+        this.domElement.append(
+            this.innerCardElement.append(
+                front,
+                back
+            )
+        );
 
         this.domElement.on('click', this.handleClick);
+        this.domElement.on('mouseenter', () => {
+            this.domElement.addClass('wiggle');
+            setTimeout(() => {
+                this.domElement.removeClass('wiggle');
+            }, 1000);
+        });
         return this.domElement;
     }
 
@@ -43,12 +54,20 @@ class Card {
     }
 
     flip() {
-        this.cardInnerElement.addClass('flipped');
+        this.innerCardElement.addClass('flipped');
         this.revealed = true;
     }
 
     unflip() {
-        this.cardInnerElement.removeClass('flipped');
+        this.innerCardElement.removeClass('flipped');
         this.revealed = false;
+    }
+
+    fadeOut() {
+        this.domElement.addClass('hidden');
+    }
+
+    fadein() {
+        this.domElement.removeClass('hidden');
     }
 }
