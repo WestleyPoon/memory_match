@@ -1,6 +1,10 @@
 # [Memory Match](https://match.westleypoon.com)
 A Pokemon themed memory match game done in the object-oriented programming paradigm
 
+- OOP component design
+- transitions and jquery animations for fun and smooth experience
+- localStorage integration for persistent savedata
+
 ### Technologies used
 - HTML
 - CSS
