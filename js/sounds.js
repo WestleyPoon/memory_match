@@ -12,6 +12,7 @@ class Sounds {
 
         this.playSound = this.playSound.bind(this);
         this.toggleBGM = this.toggleBGM.bind(this);
+        this.toggleFX = this.toggleFX.bind(this);
 
         this.setVolume();
         this.addEventListeners();
@@ -46,8 +47,20 @@ class Sounds {
     }
 
     toggleBGM() {
-        this.sounds.bgm.muted = !this.sounds.bgm.muted;
-        return this.sounds.bgm.muted;
+        const muted = !this.sounds.bgm.muted;
+        this.sounds.bgm.muted = muted;
+        this.sounds.fanfare.muted = muted;
+        return muted;
+    }
+
+    toggleFX() {
+        const muted = !this.sounds.beep.muted;
+        this.sounds.beep.muted = muted;
+        this.sounds.beep2.muted = muted;
+        this.sounds.right.muted = muted;
+        this.sounds.wrong.muted = muted;
+        this.sounds.flee.muted = muted;
+        return muted;
     }
 
     playFanfare() {
