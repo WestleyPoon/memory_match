@@ -165,15 +165,23 @@ a:link, a:visited {
     margin-top: 10px;
 }
 
-.stats-button {
+.stats-button, .sound-buttons {
     width: 90%;
     font-size: 1em;
     margin-top: 15px;
     padding: 2%;
 }
 
-#bgm-button {
-    margin-bottom: 10px;
+.sound-buttons {
+    width: 100%;
+    padding: 10px 0 0 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.sound-button {
+    width: 40%;
+    margin: 0 0 10px 0;
 }
 
 .game-area {
