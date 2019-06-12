@@ -106,6 +106,8 @@ class Dex {
 
             this.dexInfoElement.removeClass('collapsed');
             this.dexInfoElement.removeClass('hidden');
+        } else {
+            this.hideInfo();
         }
     }
 
@@ -113,6 +115,7 @@ class Dex {
         this.dexInfoElement.addClass('hidden');
         setTimeout(() => {
             this.dexInfoElement.addClass('collapsed');
+            $('.selected').removeClass('selected');
         }, 425);
     }
 
