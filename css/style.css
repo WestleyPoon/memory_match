@@ -131,6 +131,10 @@ h1 {
     width: 80%;
 }
 
+a:link, a:visited {
+    color: var(--text-color);
+}
+
 .stats-area, .game-area, .dex-area {
     height: 85vh;
     display: inline-block;
