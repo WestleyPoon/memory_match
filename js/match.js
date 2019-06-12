@@ -45,6 +45,7 @@ class Match {
 
             this.addEventListeners();
             this.addAnimations();
+            this.loadSoundData();
         }, 500);
     }
 
@@ -74,7 +75,14 @@ class Match {
                         $('<div>', {class: 'label', text: 'Accuracy'}),
                         $('<div>', {class: 'value', text: '0.00%'})),
                     $('<button>', {id: 'reset-button', text: 'Reshuffle', class: 'stats-button'}),
-                    $('<button>', {id: 'bgm-button', text: 'Music', class: 'stats-button'})
+                    $('<div>', {class: 'sound-buttons'}).append(
+                        $('<button>', {id: 'fx-button', class: 'sound-button stats-button'}).append(
+                            $('<i>', {class: 'icon-volume-up'})
+                        ),
+                        $('<button>', {id: 'bgm-button', class: 'sound-button stats-button'}).append(
+                            $('<i>', {class: 'icon-music'})
+                        )
+                    )
                 )
             );
         return statsArea;
@@ -97,7 +105,10 @@ class Match {
             this.sounds.playSound('beep');
             this.handleMusicButton();
         });
-        // $('button').on('click', () => {this.sounds.playSound('beep')});
+        $('#fx-button').on('click', () => {
+            this.sounds.playSound('beep');
+            this.handleFXButton();
+        });
         $(this.domElement).on('click', '.modal-button', () => {this.sounds.playSound('beep2')});
     }
 
@@ -166,6 +177,19 @@ class Match {
 
         this.updateStats();
     }
+
+    loadSoundData() {
+        const bgmMuted = sessionStorage.getItem('bgmMuted') === "true";
+        const fxMuted = sessionStorage.getItem('fxMuted') === "true";
+
+        if (bgmMuted) {
+            this.handleMusicButton();
+        }
+
+        if (fxMuted) {
+            this.handleFXButton();
+        }
+    }
     
     startGame() {
         $('.landing-page').addClass('hidden');
@@ -198,8 +222,21 @@ class Match {
         const muted = this.sounds.toggleBGM();
         if (muted) {
             $('#bgm-button').addClass('disabled');
+            sessionStorage.setItem('bgmMuted', true);
         } else {
             $('#bgm-button').removeClass('disabled');
+            sessionStorage.setItem('bgmMuted', false);
+        }
+    }
+
+    handleFXButton() {
+        const muted = this.sounds.toggleFX();
+        if (muted) {
+            $('#fx-button').addClass('disabled');
+            sessionStorage.setItem('fxMuted', true);
+        } else {
+            $('#fx-button').removeClass('disabled');
+            sessionStorage.setItem('fxMuted', false);
         }
     }
 
