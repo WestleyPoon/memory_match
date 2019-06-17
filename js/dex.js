@@ -3,6 +3,7 @@ class Dex {
         this.dex = [];
         this.captured = [];
         this.numCaptured = 0;
+        this.infoOpen = false;
 
         this.domElement = null;
         this.dexEntriesHolderElement = null;
@@ -85,7 +86,11 @@ class Dex {
                     });
 
                 } else {
-                    this.dex[num].captureFlash()
+                    this.dex[num].captureFlash();
+                }
+
+                if (this.infoOpen) {
+                    this.showInfo(num);
                 }
             }
         }
@@ -99,6 +104,7 @@ class Dex {
 
     showInfo(num) {
         if (this.captured[num]) {
+            this.infoOpen = true;
             const row = Math.floor(num / 28);
             const col = num % 28;
 
@@ -112,6 +118,7 @@ class Dex {
     }
 
     hideInfo() {
+        this.infoOpen = false;
         this.dexInfoElement.addClass('hidden');
         setTimeout(() => {
             this.dexInfoElement.addClass('collapsed');
