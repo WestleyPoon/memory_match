@@ -437,11 +437,6 @@ a:link, a:visited {
         margin-top: 5px;
     }
 
-    #bgm-button {
-        margin-bottom: 5px;
-        margin-top: 15px;
-    }
-
     .dex-header {
         margin: .15rem 0 .35rem;
     }
@@ -450,11 +445,6 @@ a:link, a:visited {
 @media screen and (max-width: 900px) {
     html {
         font-size: .7em;
-    }
-
-    #bgm-button {
-        margin-bottom: 5px;
-        margin-top: 10px;
     }
 
     .dex-header {
@@ -466,22 +456,10 @@ a:link, a:visited {
     html {
         font-size: .6em;
     }
-
-    #bgm-button {
-        margin-bottom: 5px;
-        margin-top: 8px;
-    }
 }
 
 @media screen and (max-width: 600px) {
     html {
         font-size: .5em;
     }
-
-    #bgm-button {
-        margin-bottom: initial;
-        margin-top: 8px;
-    }
-
-
 }
