@@ -55,6 +55,15 @@ class Dex {
             this.numCaptured++;
 
             if (scroll) {
+                if (this.numCaptured === 1) {
+                    const modal = new Modal({
+                        text: 'You caught a Pokemon! Select it in the Pokedex to get a closer look at it.',
+                        confirmButton: 'OK'
+                    });
+                    this.domElement.parent().append(modal.render());
+                    modal.show();
+                }
+
                 // top and bottom offsets of inner dex element
                 const dex = this.dexEntriesHolderElement[0];
                 const dexTop = dex.scrollTop;
