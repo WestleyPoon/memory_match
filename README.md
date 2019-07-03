@@ -1,4 +1,4 @@
-# [Memory Match](https://match.westleypoon.com)
+# [Pokemon: Match 'em all!](https://match.westleypoon.com)
 A Pokemon themed memory match game done in the object-oriented programming paradigm
 
 - OOP component design
